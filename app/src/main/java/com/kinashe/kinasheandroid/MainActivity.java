@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.Utils.BottomBarHelper;
 
 /**
@@ -39,16 +40,16 @@ public class MainActivity extends AppCompatActivity {
 
         setupBottomBar();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Salon");
+        DatabaseReference myRef = database.getReference("Hotel/zyIUAAaI64NEpQIJFpHrgclfKPv1");
 
         myRef.addValueEventListener(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Log.d(TAG, "firebase data:");
-                        // Get Post object and use the values to update the UI
-                        //Map<String, Object> data = (Map<String, Object>) dataSnapshot.getValue();
-                        //Log.d(TAG, "firebase data:" + data.get("Cafe").getClass());
+
+                        BusinessInfo data = dataSnapshot.getValue(BusinessInfo.class);
+                        Log.d(TAG, "firebase data:" + data);
 
                     }
 
