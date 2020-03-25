@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "455837118847",
+    "firebase_url": "https://kinashe-c6bc6.firebaseio.com",
+    "project_id": "kinashe-c6bc6",
+    "storage_bucket": "kinashe-c6bc6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:455837118847:android:0770690063510ac8932a4a",
+        "android_client_info": {
+          "package_name": "com.kinashe.kinasheandroid"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "455837118847-0ship7tdv199aqi29klu1c46lg74npm9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAG9gJbTMxQCqHfVLf_rcVd_nTPnqgerAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "455837118847-0ship7tdv199aqi29klu1c46lg74npm9.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "455837118847-4md51banarekjalp4hr3u9dh184b4lk0.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "eman.Kinashe"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

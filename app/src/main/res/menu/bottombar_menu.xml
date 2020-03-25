@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?><!--handles icon layout in navigation bar-->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/main"
+        android:icon="@drawable/ic_flamelogo" />
+
+    <item
+        android:id="@+id/places"
+        android:icon="@drawable/ic_placelogo" />
+
+    <item
+        android:id="@+id/transportation"
+        android:icon="@drawable/ic_buslogo" />
+    <item
+        android:id="@+id/addbusiness"
+        android:icon="@drawable/ic_handshakelogo" />
+</menu>

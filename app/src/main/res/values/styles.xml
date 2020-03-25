@@ -1,0 +1,8 @@
+<resources>
+
+    <!--    unused style sheet. Might add stuff in here eventually as stuff gets messy-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+
+    </style>
+
+</resources>
