@@ -42,19 +42,19 @@ public class BottomBarHelper {
                 switch (item.getItemId()) {
 
                     case R.id.main:
-                        context.startActivity(new Intent(context, MainActivity.class));
+                        context.startActivity(new Intent(context, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                         break;
 
                     case R.id.places:
-                        context.startActivity(new Intent(context, PlacesActivity.class));
+                        context.startActivity(new Intent(context, PlacesActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                         break;
 
                     case R.id.transportation:
-                        context.startActivity(new Intent(context, TransportationActivity.class));
+                        context.startActivity(new Intent(context, TransportationActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                         break;
 
                     case R.id.addbusiness:
-                        context.startActivity(new Intent(context, AddBusinessActivity.class));
+                        context.startActivity(new Intent(context, AddBusinessActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
                         break;
                 }
 
