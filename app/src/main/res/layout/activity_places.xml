@@ -22,37 +22,64 @@
 
         <include layout="@layout/layout_bottombar" />
 
-        <androidx.gridlayout.widget.GridLayout
-            android:layout_width="match_parent"
-            android:layout_height="658dp"
-            android:layout_marginTop="50dp">
+        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="200dp"
+            android:layout_height="130dp"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_margin="5dp"
+            app:cardCornerRadius="4dp">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="205dp"
-                android:layout_height="100dp"
-                android:layout_marginLeft="6dp"
-                android:layout_marginTop="6dp"
-                app:cardCornerRadius="4dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_row="0"
-                app:layout_column="0">
+            <ImageView
+                android:id="@+id/image_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop">
 
-                <TextView
-                    android:id="@+id/textView2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/bank"
-                    android:gravity="bottom|center"
-                    android:paddingVertical="8dp"
-                    android:text="Bank |"
-                    android:textColor="@color/iconWhite"
-                    android:textSize="17dp"
-                    app:layout_column="0"
-                    app:layout_row="1" />
-            </androidx.cardview.widget.CardView>
+            </ImageView>
+            <TextView
+                android:id="@+id/place_name_id"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Text"
+                android:gravity="bottom|center"
+                android:paddingVertical="8dp"
+                android:textSize="17dp">
 
-        </androidx.gridlayout.widget.GridLayout>
+            </TextView>
+
+        </androidx.cardview.widget.CardView>
+
+<!--        <androidx.gridlayout.widget.GridLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="658dp"-->
+<!--            android:layout_marginTop="50dp">-->
+
+<!--            <androidx.cardview.widget.CardView-->
+<!--                android:layout_width="205dp"-->
+<!--                android:layout_height="100dp"-->
+<!--                android:layout_marginLeft="6dp"-->
+<!--                android:layout_marginTop="6dp"-->
+<!--                app:cardCornerRadius="4dp"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent"-->
+<!--                app:layout_row="0"-->
+<!--                app:layout_column="0">-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/textView2"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:background="@drawable/bank"-->
+<!--                    android:gravity="bottom|center"-->
+<!--                    android:paddingVertical="8dp"-->
+<!--                    android:text="Bank |"-->
+<!--                    android:textColor="@color/iconWhite"-->
+<!--                    android:textSize="17dp"-->
+<!--                    app:layout_column="0"-->
+<!--                    app:layout_row="1" />-->
+<!--            </androidx.cardview.widget.CardView>-->
+
+<!--        </androidx.gridlayout.widget.GridLayout>-->
 
     </RelativeLayout>
 
