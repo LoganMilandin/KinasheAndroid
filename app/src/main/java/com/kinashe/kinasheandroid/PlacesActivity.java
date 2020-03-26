@@ -24,7 +24,7 @@ public class PlacesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_transportation);
+        setContentView(R.layout.activity_places);
         setupBottomBar();
         TopBarHelper.setTopText("Places | ቦታ", PlacesActivity.this);
     }

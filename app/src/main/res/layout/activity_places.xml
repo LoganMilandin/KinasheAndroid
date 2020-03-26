@@ -24,45 +24,33 @@
 
         <androidx.gridlayout.widget.GridLayout
             android:layout_width="match_parent"
-            android:layout_height="700dp"
-            app:layout_editor_absoluteY="50dp">
+            android:layout_height="658dp"
+            android:layout_marginTop="50dp">
 
-<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                android:id="@+id/rellayout2"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="600dp"-->
-<!--                android:layout_marginTop="50dp"-->
-<!--                app:layout_column="0"-->
-<!--                app:layout_row="1">-->
+            <androidx.cardview.widget.CardView
+                android:layout_width="205dp"
+                android:layout_height="100dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginTop="6dp"
+                app:cardCornerRadius="4dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_row="0"
+                app:layout_column="0">
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="205dp"
-                    android:layout_height="100dp"
-                    android:layout_marginLeft="6dp"
-                    android:layout_marginTop="6dp"
-                    app:cardCornerRadius="4dp"
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bank"
+                    android:gravity="bottom|center"
+                    android:paddingVertical="8dp"
+                    android:text="Bank |"
+                    android:textColor="@color/iconWhite"
+                    android:textSize="17dp"
                     app:layout_column="0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_row="0">
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@drawable/bank"
-                        android:gravity="bottom|center"
-                        android:paddingVertical="8dp"
-                        android:text="Bank |"
-                        android:textColor="@color/iconWhite"
-                        android:textSize="17dp"
-                        app:layout_column="0"
-                        app:layout_row="1" />
-                </androidx.cardview.widget.CardView>
-
-
-<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
-
+                    app:layout_row="1" />
+            </androidx.cardview.widget.CardView>
 
         </androidx.gridlayout.widget.GridLayout>
 
