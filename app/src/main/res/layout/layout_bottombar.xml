@@ -1,18 +1,24 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_alignParentBottom="true">
-
         <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
             android:id="@+id/bottombar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="64dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             android:background="@color/lighterBlue"
             app:itemIconTint="@drawable/bottombar_color_selector"
             app:itemIconSize="55dp"
             app:menu="@menu/bottombar_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
-    </RelativeLayout>
+
+        <View
+            app:layout_constraintBottom_toTopOf="@id/bottombar"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/borderBlue" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </merge>
