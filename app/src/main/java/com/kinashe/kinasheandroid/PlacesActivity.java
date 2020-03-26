@@ -26,7 +26,7 @@ public class PlacesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transportation);
         setupBottomBar();
-        TopBarHelper.setTopText("Transportation | መጓጓዣ", PlacesActivity.this);
+        TopBarHelper.setTopText("Places | ቦታ", PlacesActivity.this);
     }
 
     private void setupBottomBar() {
