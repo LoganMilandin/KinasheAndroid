@@ -14,7 +14,7 @@
             android:layout_height="50dp"
             android:id="@+id/rellayout1">
 
-            <include layout="@layout/layout_topbar" />
+            <include layout="@layout/layout_topbar_text" />
         </RelativeLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout

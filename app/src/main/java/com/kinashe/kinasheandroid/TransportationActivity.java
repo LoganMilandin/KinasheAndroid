@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kinashe.kinasheandroid.Utils.BottomBarHelper;
+import com.kinashe.kinasheandroid.Utils.TopBarHelper;
 
 //handles the transportation tab on the app
 public class TransportationActivity extends AppCompatActivity {
@@ -23,6 +24,7 @@ public class TransportationActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transportation);
         setupBottomBar();
+        TopBarHelper.setTopText("Places", TransportationActivity.this);
     }
 
     private void setupBottomBar() {

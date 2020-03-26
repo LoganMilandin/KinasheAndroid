@@ -14,9 +14,18 @@
 
             <androidx.appcompat.widget.Toolbar
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/topbar"
-                android:background="@color/lighterBlue"></androidx.appcompat.widget.Toolbar>
+                android:background="@color/lighterBlue">
+
+                <TextView
+                    android:id="@+id/toptext"
+                    android:textSize="20dp"
+                    android:textColor="@color/iconWhite"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center" />
+            </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
         <View
