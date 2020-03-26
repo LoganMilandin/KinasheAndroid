@@ -46,5 +46,6 @@ dependencies {
     //firebase APIs
     implementation 'com.google.firebase:firebase-analytics:17.2.2'
     implementation 'com.google.firebase:firebase-database:19.2.1'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
 
 }
