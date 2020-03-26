@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:background="@color/darkBlue"
     android:layout_width="match_parent"
@@ -19,62 +20,52 @@
             <include layout="@layout/layout_topbar_text" />
         </RelativeLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/rellayout2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_anchor="@+id/relativeLayout"
-            app:layout_anchorGravity="center">
-
-            <ScrollView
-                android:id="@+id/scrollView9"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-            </ScrollView>
-
-            <androidx.gridlayout.widget.GridLayout
-                android:layout_width="match_parent"
-                android:layout_height="500dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_editor_absoluteY="50dp">
-
-
-                <Button
-                    android:id="@+id/button3"
-                    android:layout_width="207dp"
-                    android:layout_height="150dp"
-                    android:text="Button"
-                    app:layout_column="0"
-                    app:layout_row="0" />
-
-                <Button
-                    android:id="@+id/button4"
-                    android:layout_width="207dp"
-                    android:layout_height="150dp"
-                    android:text="Button"
-                    app:layout_column="1"
-                    app:layout_row="0" />
-
-                <ImageView
-                    android:id="@+id/imageView5"
-                    android:layout_width="208dp"
-                    android:layout_height="159dp"
-                    app:layout_column="0"
-                    app:layout_row="1"
-                    app:srcCompat="@drawable/common_google_signin_btn_icon_dark" />
-
-            </androidx.gridlayout.widget.GridLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         <include layout="@layout/layout_bottombar" />
 
+        <androidx.gridlayout.widget.GridLayout
+            android:layout_width="match_parent"
+            android:layout_height="700dp"
+            app:layout_editor_absoluteY="50dp">
+
+<!--            <androidx.constraintlayout.widget.ConstraintLayout-->
+<!--                android:id="@+id/rellayout2"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="600dp"-->
+<!--                android:layout_marginTop="50dp"-->
+<!--                app:layout_column="0"-->
+<!--                app:layout_row="1">-->
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="205dp"
+                    android:layout_height="100dp"
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="6dp"
+                    app:cardCornerRadius="4dp"
+                    app:layout_column="0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_row="0">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/bank"
+                        android:gravity="bottom|center"
+                        android:paddingVertical="8dp"
+                        android:text="Bank |"
+                        android:textColor="@color/iconWhite"
+                        android:textSize="17dp"
+                        app:layout_column="0"
+                        app:layout_row="1" />
+                </androidx.cardview.widget.CardView>
+
+
+<!--            </androidx.constraintlayout.widget.ConstraintLayout>-->
+
+
+        </androidx.gridlayout.widget.GridLayout>
+
     </RelativeLayout>
+
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
