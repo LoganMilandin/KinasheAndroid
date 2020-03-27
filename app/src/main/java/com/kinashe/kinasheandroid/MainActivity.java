@@ -48,22 +48,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupBottomBar();
-
-        businessDisplay = findViewById(R.id.businessDisplay);
-        displayManager = new LinearLayoutManager(this);
-        businessDisplay.setLayoutManager(displayManager);
-
-        List<String> test = new ArrayList<>();
-        test.add("hello worldasdhfkjsahdsahf");
-        test.add("hsjkaskjdhkajsf");
-        test.add("blah blah blah");
-        test.add("testtestetstetste");
-        test.add("avery sucks dick");
-        test.add("I dont know how to program");
-
-        displayAdapter = new HomepageListAdapter(test);
-        businessDisplay.setAdapter(displayAdapter);
-
+        populateHomepage();
     }
 
     /**
@@ -79,19 +64,25 @@ public class MainActivity extends AppCompatActivity {
         menuItem.setChecked(true);
     }
 
-    private void testDB() {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Hotel/zyIUAAaI64NEpQIJFpHrgclfKPv1");
-
-        myRef.addValueEventListener(
+    private void populateHomepage() {
+        DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+        database.addValueEventListener(
                 new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.d(TAG, "firebase data:");
-
-                        BusinessInfo data = dataSnapshot.getValue(BusinessInfo.class);
-                        Log.d(TAG, "firebase data:" + data);
-
+                    public void onDataChange(DataSnapshot data) {
+                        List<BusinessInfo> businesses = new ArrayList<>();
+                        for (DataSnapshot businessType : data.getChildren()) {
+                            if (!businessType.getKey().equals("Advertisements")) {
+                                for (DataSnapshot business : businessType.getChildren()) {
+                                    businesses.add(business.getValue(BusinessInfo.class));
+                                }
+                            }
+                        }
+                        businessDisplay = findViewById(R.id.businessDisplay);
+                        displayManager = new LinearLayoutManager(MainActivity.this);
+                        businessDisplay.setLayoutManager(displayManager);
+                        displayAdapter = new HomepageListAdapter(businesses);
+                        businessDisplay.setAdapter(displayAdapter);
                     }
 
                     //

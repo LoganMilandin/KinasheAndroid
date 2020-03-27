@@ -5,20 +5,22 @@
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_alignParentBottom="true">
+
         <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
             android:id="@+id/bottombar"
             android:layout_width="match_parent"
             android:layout_height="64dp"
-            app:layout_constraintBottom_toBottomOf="parent"
             android:background="@color/lighterBlue"
-            app:itemIconTint="@drawable/bottombar_color_selector"
             app:itemIconSize="55dp"
+            app:itemIconTint="@drawable/bottombar_color_selector"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:menu="@menu/bottombar_menu"></com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 
         <View
-            app:layout_constraintBottom_toTopOf="@id/bottombar"
+            android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/borderBlue" />
+            android:background="@color/borderBlue"
+            app:layout_constraintBottom_toTopOf="@id/bottombar" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </merge>
