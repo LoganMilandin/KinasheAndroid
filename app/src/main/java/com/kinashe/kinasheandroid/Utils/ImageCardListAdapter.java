@@ -15,12 +15,12 @@ import com.kinashe.kinasheandroid.R;
 
 import java.util.List;
 
-public class ImageCardRecyclerViewAdapter extends RecyclerView.Adapter<ImageCardRecyclerViewAdapter.MyViewHolder> {
+public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<ImageCard> mData;
 
-    public ImageCardRecyclerViewAdapter(Context mContext, List<ImageCard> mData) {
+    public ImageCardListAdapter(Context mContext, List<ImageCard> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -51,8 +51,8 @@ public class ImageCardRecyclerViewAdapter extends RecyclerView.Adapter<ImageCard
 
         public MyViewHolder(View itemView) {
             super(itemView);
-            place_name = (TextView) itemView.findViewById(R.id.place_name_id);
-            place_img = (ImageView) itemView.findViewById(R.id.image_id);
+            place_name = itemView.findViewById(R.id.place_name_id);
+            place_img = itemView.findViewById(R.id.image_id);
         }
     }
 }

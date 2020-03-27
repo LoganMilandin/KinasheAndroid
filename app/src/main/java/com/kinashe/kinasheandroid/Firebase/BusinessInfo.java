@@ -11,6 +11,7 @@ public class BusinessInfo {
     private String companyName;
     private String description;
     private String descriptionTrans;
+    private String website;
 
     private String phone;
     private String lat;
@@ -43,6 +44,10 @@ public class BusinessInfo {
 
     public String getDescriptionTrans() {
         return descriptionTrans;
+    }
+
+    public String getWebsite() {
+        return website;
     }
 
     public String getPhone() {

@@ -20,7 +20,7 @@
 
                 <TextView
                     android:id="@+id/toptext"
-                    android:textSize="20dp"
+                    android:textSize="20sp"
                     android:textColor="@color/iconWhite"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

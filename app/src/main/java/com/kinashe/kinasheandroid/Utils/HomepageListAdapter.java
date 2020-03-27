@@ -1,5 +1,10 @@
 package com.kinashe.kinasheandroid.Utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.location.Location;
+import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +22,10 @@ import java.util.List;
 
 public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapter.BusinessViewHolder> {
 
+    private static final String TAG = "HomepageListAdapter";
+    private final Location myLocation;
+    private Context context;
+
     private List<BusinessInfo> businesses;
 
     public static class BusinessViewHolder extends RecyclerView.ViewHolder {
@@ -24,6 +33,10 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
         public TextView companyName;
         public TextView businessType;
         public TextView distance;
+        public ImageView navLogo;
+        public ImageView phoneLogo;
+        public ImageView searchLogo;
+
 
         public BusinessViewHolder(@NonNull View businessView) {
             super(businessView);
@@ -31,12 +44,17 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
             this.companyName = businessView.findViewById(R.id.companyName);
             this.businessType = businessView.findViewById(R.id.businessType);
             this.distance = businessView.findViewById(R.id.distance);
+            this.navLogo = businessView.findViewById(R.id.directions);
+            this.phoneLogo = businessView.findViewById(R.id.phone);
+            this.searchLogo = businessView.findViewById(R.id.website);
         }
 
     }
 
-    public HomepageListAdapter(List<BusinessInfo> businesses) {
+    public HomepageListAdapter(List<BusinessInfo> businesses, Context context, Location location) {
         this.businesses = businesses;
+        this.context = context;
+        this.myLocation = location;
     }
 
     @Override
@@ -50,7 +68,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
 
     @Override
     public void onBindViewHolder(BusinessViewHolder holder, int position) {
-        BusinessInfo business = businesses.get(position);
+        final BusinessInfo business = businesses.get(position);
         List<String> photos = business.getPhotos();
         //not sure if failed photo submissions will show up as null or
         //empty on the read request so this is just to be safe
@@ -59,7 +77,48 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
         }
         holder.companyName.setText(business.getCompanyName());
         holder.businessType.setText(business.getBusinessType());
-        holder.distance.setText("15793.0 km");
+        if (myLocation != null) {
+            Location targetLocation = new Location("");
+            targetLocation.setLatitude(Double.parseDouble(business.getLat()));//your coords of course
+            targetLocation.setLongitude(Double.parseDouble(business.getLon()));
+            //calculation and rounding done all at once
+            double distanceInKm = (int) (myLocation.distanceTo(targetLocation) / 10.0) / 100.0;
+            holder.distance.setText(distanceInKm + " km");
+        } else {
+            holder.distance.setText("Can't access distance without your location");
+        }
+        //listen for click to open google maps
+        holder.navLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View image) {
+                String lat = business.getLat();
+                String lon = business.getLon();
+                Log.d(TAG, lat + lon);
+            }
+        });
+        //listen for click to open phone
+        holder.phoneLogo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View image) {
+                String phone = business.getPhone();
+                Log.d(TAG, phone);
+            }
+        });
+        //again we expect an empty string here but it never hurts to be safe
+        if (business.getWebsite() == null || business.getWebsite().equals("")) {
+            holder.searchLogo.setVisibility(View.INVISIBLE);
+        } else {
+            //listen for click to open website
+            holder.searchLogo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View image) {
+                    String website = business.getWebsite();
+                    Log.d(TAG, website);
+                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                    context.startActivity(browserIntent);
+                }
+            });
+        }
     }
 
     public int getItemCount() {

@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kinashe.kinasheandroid.Utils.BottomBarHelper;
 import com.kinashe.kinasheandroid.Utils.ImageCardHelper;
-import com.kinashe.kinasheandroid.Utils.ImageCardRecyclerViewAdapter;
+import com.kinashe.kinasheandroid.Utils.ImageCardListAdapter;
 import com.kinashe.kinasheandroid.Utils.TopBarHelper;
 
 import java.util.List;
@@ -36,8 +36,8 @@ public class PlacesActivity extends AppCompatActivity {
 
         cards = new ImageCardHelper("places").get();
 
-        RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
-        ImageCardRecyclerViewAdapter myAdapter = new ImageCardRecyclerViewAdapter(this,cards);
+        RecyclerView myrv = findViewById(R.id.recyclerview_id);
+        ImageCardListAdapter myAdapter = new ImageCardListAdapter(this, cards);
         myrv.setLayoutManager(new GridLayoutManager(this,2));
         myrv.setAdapter(myAdapter);
 

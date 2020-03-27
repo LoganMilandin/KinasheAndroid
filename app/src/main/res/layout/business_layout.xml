@@ -11,12 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:src="@drawable/bakery"
-        android:background="@color/iconWhite" />
+        android:background="@color/imageGray" />
 
     <TextView
         android:id="@+id/companyName"
-        android:textSize="20dp"
+        android:textSize="20sp"
         android:paddingTop="7dp"
+        android:paddingLeft="4dp"
         android:textColor="@color/iconWhite"
         app:layout_constraintTop_toBottomOf="@id/businessPhoto"
         android:layout_width="match_parent"
@@ -24,8 +25,9 @@
 
     <TextView
         android:id="@+id/businessType"
-        android:textSize="13dp"
+        android:textSize="13sp"
         android:paddingTop="15dp"
+        android:paddingLeft="4dp"
         android:textColor="@color/iconWhite"
         app:layout_constraintTop_toBottomOf="@id/companyName"
         android:layout_width="match_parent"
@@ -33,13 +35,14 @@
 
     <TextView
         android:id="@+id/distance"
-        android:textSize="13dp"
+        android:textSize="13sp"
+        android:paddingLeft="4dp"
         android:paddingTop="15dp"
         android:textColor="@color/iconWhite"
+        app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/businessType"
         android:layout_width="200dp"
         android:layout_height="match_parent" />
-
     <ImageView
         android:id="@+id/directions"
         app:layout_constraintTop_toBottomOf="@id/businessType"
@@ -64,5 +67,6 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_width="50dp"
         android:layout_height="50dp"
+        android:layout_marginRight="4dp"
         android:src="@drawable/magnifying_glass_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>

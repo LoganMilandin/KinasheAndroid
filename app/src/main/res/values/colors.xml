@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="darkBlue">#004169</color>
-    <color name="lighterBlue">#194169</color>
+    <color name="darkBlue">#083852</color>
+    <color name="lighterBlue">#1d4d6c</color>
+    <color name="borderBlue">#002b4d</color>
     <color name="iconGray">#909090</color>
-    <color name="iconWhite">#FFFFFF</color>
-    <color name="borderBlue">#020039</color>
+    <color name="iconWhite">#ffffff</color>
+    <color name="imageGray">#3080b5</color>
+    <!--    <color name="imageGray">#1a1a1a</color>-->
 </resources>
