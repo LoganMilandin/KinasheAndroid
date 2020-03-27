@@ -1,4 +1,4 @@
-package com.kinashe.kinasheandroid;
+package com.kinashe.kinasheandroid.Utils;
 
 public class ImageCard {
 

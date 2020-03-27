@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kinashe.kinasheandroid.Utils.BottomBarHelper;
+import com.kinashe.kinasheandroid.Utils.ImageCard;
 import com.kinashe.kinasheandroid.Utils.ImageCardHelper;
 import com.kinashe.kinasheandroid.Utils.ImageCardListAdapter;
 import com.kinashe.kinasheandroid.Utils.TopBarHelper;

@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kinashe.kinasheandroid.ImageCard;
 import com.kinashe.kinasheandroid.R;
 
 import java.util.List;
@@ -42,8 +41,13 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
         holder.image_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mData = new ImageCardHelper("entertainment").get();
-                notifyDataSetChanged();
+                TextView text = v.findViewById(R.id.place_name_id);
+                String cardText = (String) text.getText();
+                mData = new ImageCardHelper(cardText).get();
+                if (mData != null) {
+                    TopBarHelper.setTopText(cardText, mContext);
+                    notifyDataSetChanged();
+                }
             }
         });
     }
