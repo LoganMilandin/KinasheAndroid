@@ -2,12 +2,14 @@ package com.kinashe.kinasheandroid;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
+import com.kinashe.kinasheandroid.Utils.ActivityThatMakesCalls;
 import com.kinashe.kinasheandroid.Utils.BottomBarHelper;
 import com.kinashe.kinasheandroid.Utils.HomepageListAdapter;
 import com.kinashe.kinasheandroid.Utils.PermissionUtils;
@@ -39,18 +42,25 @@ import java.util.List;
  * activities. For simplicity, the others aren't commented because it's the same
  * idea as this
  */
-public class MainActivity extends AppCompatActivity implements ActivityCompat.OnRequestPermissionsResultCallback {
+public class MainActivity extends AppCompatActivity
+        implements ActivityCompat.OnRequestPermissionsResultCallback,
+        ActivityThatMakesCalls {
     private static final String TAG = "MainActivity";
 
     //for navbar menu
     private static final int ACTIVITY_NUM = 0;
 
-    //for location
-    private static final int LOCATION_REQUEST_CODE = 1;
+    //for location permissions
+    public static final int LOCATION_REQUEST_CODE = 1;
+    //for phone permissions
+    public static final int CALL_REQUEST = 2;
 
     //for code reuse, notice all activities have identical
     //setupBottomBar methods
     private Context mContext = MainActivity.this;
+
+    //for handling call requests
+    private Intent callIntent;
 
     //handlers for scrolling view
     private RecyclerView businessDisplay;
@@ -72,6 +82,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             //populate homepage with distances
+            Log.d(TAG, "Already have permission");
             populateHomepageWithLocation();
 
         } else {
@@ -94,6 +105,7 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     private void populateHomepage(final Location location) {
+        Log.d(TAG, "populating homepage");
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
         database.addValueEventListener(
                 new ValueEventListener() {
@@ -124,15 +136,19 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
     }
 
     private void populateHomepageWithLocation() {
+
         locationProvider = LocationServices.getFusedLocationProviderClient(MainActivity.this);
         locationProvider.getLastLocation()
                 .addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
-                        Log.d(TAG, "got location");
+                        Log.d(TAG, "got location: " + (location == null));
                         if (location != null) {
+                            Log.d(TAG, "location not null");
                             populateHomepage(location);
+                        } else {
+                            populateHomepage(null);
                         }
                     }
                 });
@@ -140,15 +156,28 @@ public class MainActivity extends AppCompatActivity implements ActivityCompat.On
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode != LOCATION_REQUEST_CODE) {
-            return;
+        Log.d(TAG, "answer received: " + requestCode);
+        if (requestCode == LOCATION_REQUEST_CODE) {
+            if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
+                //populate homepage with distances
+                populateHomepageWithLocation();
+                Log.d(TAG, "location permission granted");
+            } else {
+                Log.d(TAG, "location permission not granted");
+                populateHomepage(null);
+            }
+        } else if (requestCode == CALL_REQUEST) {
+            if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.CALL_PHONE)) {
+                //make the call
+                PermissionUtils.makePhoneCall(MainActivity.this, this.callIntent, CALL_REQUEST);
+                Log.d(TAG, "list adapter listener triggered");
+            } else {
+                Toast.makeText(MainActivity.this, "Permission DENIED", Toast.LENGTH_SHORT).show();
+            }
         }
-        if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            //populate homepage with distances
-            populateHomepageWithLocation();
-            Log.d(TAG, "permission granted");
-        } else {
-            populateHomepage(null);
-        }
+    }
+
+    public void setCallIntent(Intent intent) {
+        this.callIntent = intent;
     }
 }
