@@ -1,4 +1,4 @@
-package com.kinashe.kinasheandroid;
+package com.kinashe.kinasheandroid.Utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,14 +10,17 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kinashe.kinasheandroid.ImageCard;
+import com.kinashe.kinasheandroid.R;
+
 import java.util.List;
 
-public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapter.MyViewHolder> {
+public class ImageCardRecyclerViewAdapter extends RecyclerView.Adapter<ImageCardRecyclerViewAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<ImageCard> mData;
 
-    public RecyclerViewAdapter(Context mContext, List<ImageCard> mData) {
+    public ImageCardRecyclerViewAdapter(Context mContext, List<ImageCard> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }

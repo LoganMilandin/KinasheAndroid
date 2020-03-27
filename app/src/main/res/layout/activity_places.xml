@@ -22,64 +22,48 @@
 
         <include layout="@layout/layout_bottombar" />
 
-        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="200dp"
-            android:layout_height="130dp"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_margin="5dp"
-            app:cardCornerRadius="4dp">
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:context=".PlacesActivity"
+            android:padding="5dp">
 
-            <ImageView
-                android:id="@+id/image_id"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_id"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:scaleType="centerCrop">
+                android:layout_marginTop="50dp"
+                android:layout_marginBottom="65dp"/>
+        </LinearLayout>
+<!--        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--            android:layout_width="200dp"-->
+<!--            android:layout_height="130dp"-->
+<!--            xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--            android:layout_margin="5dp"-->
+<!--            app:cardCornerRadius="4dp">-->
 
-            </ImageView>
-            <TextView
-                android:id="@+id/place_name_id"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="Text"
-                android:gravity="bottom|center"
-                android:paddingVertical="8dp"
-                android:textSize="17dp">
+<!--            <ImageView-->
+<!--                android:id="@+id/image_id"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:scaleType="centerCrop">-->
 
-            </TextView>
+<!--            </ImageView>-->
+<!--            <TextView-->
+<!--                android:id="@+id/place_name_id"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:text="Text"-->
+<!--                android:gravity="bottom|center"-->
+<!--                android:paddingVertical="8dp"-->
+<!--                android:textSize="17dp">-->
 
-        </androidx.cardview.widget.CardView>
+<!--            </TextView>-->
 
-<!--        <androidx.gridlayout.widget.GridLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="658dp"-->
-<!--            android:layout_marginTop="50dp">-->
-
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:layout_width="205dp"-->
-<!--                android:layout_height="100dp"-->
-<!--                android:layout_marginLeft="6dp"-->
-<!--                android:layout_marginTop="6dp"-->
-<!--                app:cardCornerRadius="4dp"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent"-->
-<!--                app:layout_row="0"-->
-<!--                app:layout_column="0">-->
-
-<!--                <TextView-->
-<!--                    android:id="@+id/textView2"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:background="@drawable/bank"-->
-<!--                    android:gravity="bottom|center"-->
-<!--                    android:paddingVertical="8dp"-->
-<!--                    android:text="Bank |"-->
-<!--                    android:textColor="@color/iconWhite"-->
-<!--                    android:textSize="17dp"-->
-<!--                    app:layout_column="0"-->
-<!--                    app:layout_row="1" />-->
-<!--            </androidx.cardview.widget.CardView>-->
-
-<!--        </androidx.gridlayout.widget.GridLayout>-->
+<!--        </androidx.cardview.widget.CardView>-->
 
     </RelativeLayout>
 

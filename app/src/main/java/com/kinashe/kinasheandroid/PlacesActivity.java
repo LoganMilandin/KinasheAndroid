@@ -1,7 +1,6 @@
 package com.kinashe.kinasheandroid;
 
 import android.content.Context;
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -15,9 +14,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kinashe.kinasheandroid.Utils.BottomBarHelper;
+import com.kinashe.kinasheandroid.Utils.ImageCardHelper;
+import com.kinashe.kinasheandroid.Utils.ImageCardRecyclerViewAdapter;
 import com.kinashe.kinasheandroid.Utils.TopBarHelper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 //handles the place tab on the app
@@ -32,20 +32,17 @@ public class PlacesActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_recycler);
-//        setupBottomBar();
-//        TopBarHelper.setTopText("Places | ቦታ", PlacesActivity.this);
-        cards = new ArrayList<>();
-        cards.add(new ImageCard("Bank", R.drawable.bank));
-        cards.add(new ImageCard("Bank", R.drawable.bank));
-        cards.add(new ImageCard("Bank", R.drawable.bank));
-        cards.add(new ImageCard("Bank", R.drawable.bank));
-        cards.add(new ImageCard("cafe", R.drawable.barber));
+        setContentView(R.layout.activity_places);
+
+        cards = new ImageCardHelper("places").get();
 
         RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
-        RecyclerViewAdapter myAdapter = new RecyclerViewAdapter(this,cards);
+        ImageCardRecyclerViewAdapter myAdapter = new ImageCardRecyclerViewAdapter(this,cards);
         myrv.setLayoutManager(new GridLayoutManager(this,2));
         myrv.setAdapter(myAdapter);
+
+        setupBottomBar();
+        TopBarHelper.setTopText("Places | ቦታ", PlacesActivity.this);
     }
 
     private void setupBottomBar() {
