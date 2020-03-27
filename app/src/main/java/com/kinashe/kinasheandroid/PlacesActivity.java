@@ -36,8 +36,8 @@ public class PlacesActivity extends AppCompatActivity {
 
         cards = new ImageCardHelper("places").get();
 
-        RecyclerView myrv = findViewById(R.id.recyclerview_id);
-        ImageCardListAdapter myAdapter = new ImageCardListAdapter(this, cards);
+        RecyclerView myrv = (RecyclerView) findViewById(R.id.recyclerview_id);
+        ImageCardListAdapter myAdapter = new ImageCardListAdapter(this,cards);
         myrv.setLayoutManager(new GridLayoutManager(this,2));
         myrv.setAdapter(myAdapter);
 
