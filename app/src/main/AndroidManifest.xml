@@ -26,6 +26,7 @@
         <activity android:name=".PlacesActivity"></activity>
         <activity android:name=".TransportationActivity"></activity>
         <activity android:name=".AddBusinessActivity"></activity>
+        <activity android:name=".NearbyAllActivity"></activity>
     </application>
 
 </manifest>
