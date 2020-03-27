@@ -38,32 +38,6 @@
                 android:layout_marginTop="50dp"
                 android:layout_marginBottom="65dp"/>
         </LinearLayout>
-<!--        <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"-->
-<!--            android:layout_width="200dp"-->
-<!--            android:layout_height="130dp"-->
-<!--            xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--            android:layout_margin="5dp"-->
-<!--            app:cardCornerRadius="4dp">-->
-
-<!--            <ImageView-->
-<!--                android:id="@+id/image_id"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:scaleType="centerCrop">-->
-
-<!--            </ImageView>-->
-<!--            <TextView-->
-<!--                android:id="@+id/place_name_id"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:text="Text"-->
-<!--                android:gravity="bottom|center"-->
-<!--                android:paddingVertical="8dp"-->
-<!--                android:textSize="17dp">-->
-
-<!--            </TextView>-->
-
-<!--        </androidx.cardview.widget.CardView>-->
 
     </RelativeLayout>
 

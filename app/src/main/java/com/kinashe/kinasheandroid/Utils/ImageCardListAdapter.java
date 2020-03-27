@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kinashe.kinasheandroid.ImageCard;
@@ -15,12 +16,12 @@ import com.kinashe.kinasheandroid.R;
 
 import java.util.List;
 
-public class ImageCardRecyclerViewAdapter extends RecyclerView.Adapter<ImageCardRecyclerViewAdapter.MyViewHolder> {
+public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdapter.MyViewHolder> {
 
     private Context mContext;
     private List<ImageCard> mData;
 
-    public ImageCardRecyclerViewAdapter(Context mContext, List<ImageCard> mData) {
+    public ImageCardListAdapter(Context mContext, List<ImageCard> mData) {
         this.mContext = mContext;
         this.mData = mData;
     }
@@ -34,10 +35,17 @@ public class ImageCardRecyclerViewAdapter extends RecyclerView.Adapter<ImageCard
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
 
         holder.place_name.setText(mData.get(position).getText());
         holder.place_img.setImageResource(mData.get(position).getImage());
+        holder.image_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mData = new ImageCardHelper("entertainment").get();
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override
@@ -48,11 +56,13 @@ public class ImageCardRecyclerViewAdapter extends RecyclerView.Adapter<ImageCard
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView place_name;
         ImageView place_img;
+        CardView image_card;
 
         public MyViewHolder(View itemView) {
             super(itemView);
             place_name = (TextView) itemView.findViewById(R.id.place_name_id);
             place_img = (ImageView) itemView.findViewById(R.id.image_id);
+            image_card = (CardView) itemView.findViewById(R.id.image_card_id);
         }
     }
 }
