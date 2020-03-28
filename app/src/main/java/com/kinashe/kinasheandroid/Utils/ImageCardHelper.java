@@ -8,6 +8,7 @@ import java.util.List;
 public class ImageCardHelper {
 
     private List<ImageCard> cards;
+    private String currScreen;
 
     public ImageCardHelper(String screen) {
         /*accepts "places","Entertainment | መዝናኛ","Food | ምግብ","Hair Salon/Spa | የውበት ሳሎን እና ስፓ",
@@ -45,7 +46,7 @@ public class ImageCardHelper {
             cards.add(new ImageCard("Hotel | ሆቴል", R.drawable.hotel));
         } else if (screen == "Major Attractions | ዋና መስህብ") {
             cards.add(new ImageCard("Monument | ሐውልት", R.drawable.monument));
-            cards.add(new ImageCard("Museus | ሙዚየም", R.drawable.museum));
+            cards.add(new ImageCard("Museum | ሙዚየም", R.drawable.museum));
             cards.add(new ImageCard("Sightseeing |መጎብኘት", R.drawable.sightseeing));
         } else if (screen == "Medical | ሕክምና") {
             cards.add(new ImageCard("Hospital | ሆስፒታል", R.drawable.hospital));
@@ -75,6 +76,7 @@ public class ImageCardHelper {
         } else {
             cards = null;
         }
+        this.currScreen = screen;
     }
 
     public List<ImageCard> get() {

@@ -6,23 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kinashe.kinasheandroid.Utils.BottomBarHelper;
-import com.kinashe.kinasheandroid.Utils.ImageCard;
-import com.kinashe.kinasheandroid.Utils.ImageCardHelper;
-import com.kinashe.kinasheandroid.Utils.ImageCardListAdapter;
-import com.kinashe.kinasheandroid.Utils.NearbyAllAdapter;
 import com.kinashe.kinasheandroid.Utils.TopBarHelper;
-
-import java.util.List;
 
 //handles the place tab on the app
 public class NearbyAllActivity extends AppCompatActivity {
@@ -48,6 +41,7 @@ public class NearbyAllActivity extends AppCompatActivity {
 
         setupBottomBar();
         TopBarHelper.setTopText(receivedText, NearbyAllActivity.this);
+        setupBackButton();
     }
 
     private void setupBottomBar() {
@@ -64,4 +58,17 @@ public class NearbyAllActivity extends AppCompatActivity {
         TextView topText = findViewById(R.id.toptext);
         topText.setText("hello world");
     }
+
+    private void setupBackButton() {
+        ImageView backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(mContext, PlacesActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                mContext.startActivity(intent);
+            }
+        });
+    }
+
 }

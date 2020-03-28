@@ -1,6 +1,7 @@
 package com.kinashe.kinasheandroid;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -34,6 +35,8 @@ public class PlacesActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_places);
+
+        Intent intent = getIntent();
 
         cards = new ImageCardHelper("places").get();
 

@@ -47,6 +47,7 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
             public void onClick(View v) {
                 TextView text = v.findViewById(R.id.place_name_id);
                 String cardText = (String) text.getText();
+                TextView topText =
                 int image = mData.get(position).getImage(); //get the image we're clicking on
                 mData = new ImageCardHelper(cardText).get();
                 if (mData != null) {
@@ -54,9 +55,11 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
                     notifyDataSetChanged();
                 } else {
                     Intent intent = new Intent(mContext, NearbyAllActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                     intent.putExtra("image", image);
                     intent.putExtra("topText", cardText);
                     mContext.startActivity(intent);
+
                 }
             }
         });
