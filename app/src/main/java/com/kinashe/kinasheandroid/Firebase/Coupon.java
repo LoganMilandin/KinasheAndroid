@@ -16,7 +16,7 @@ public class Coupon {
     //date to decide whether to render
     private long expTimestamp;
 
-    private Coupon() {
+    public Coupon() {
     }
 
     public String getAvailability() {
@@ -45,6 +45,39 @@ public class Coupon {
 
     public String getExpiration() {
         return expiration;
+    }
+
+
+    public void setAvailability(String availability) {
+        this.availability = availability;
+    }
+
+    public void setAvailabilityTrans(String availabilityTrans) {
+        this.availabilityTrans = availabilityTrans;
+    }
+
+    public void setDeal(String deal) {
+        this.deal = deal;
+    }
+
+    public void setDealTrans(String dealTrans) {
+        this.dealTrans = dealTrans;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setTitleTrans(String titleTrans) {
+        this.titleTrans = titleTrans;
+    }
+
+    public void setExpiration(String expiration) {
+        this.expiration = expiration;
+    }
+
+    public void setExpTimestamp(long expTimestamp) {
+        this.expTimestamp = expTimestamp;
     }
 
     public long getExpTimestamp() {

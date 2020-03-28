@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.R;
+import com.kinashe.kinasheandroid.SingleBusinessActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -64,7 +65,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
         Log.d(TAG, "constructing list adapter");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         //now, we inflate a custom layout file with the markup for an individual business
-        View businessView = inflater.inflate(R.layout.business_layout, parent, false);
+        View businessView = inflater.inflate(R.layout.layout_business, parent, false);
         BusinessViewHolder view = new BusinessViewHolder(businessView);
         return view;
     }
@@ -90,13 +91,17 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
         } else {
             holder.distance.setText("location services disabled or unavailable");
         }
+        setOnClickListeners(business, holder);
+    }
+
+    private void setOnClickListeners(final BusinessInfo business, BusinessViewHolder holder) {
         //listen for click to open google maps
         holder.navLogo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View navIcon) {
-                String lat = business.getLat();
-                String lon = business.getLon();
-                Log.d(TAG, lat + lon);
+                Intent directionsIntent = new Intent(Intent.ACTION_VIEW,
+                        Uri.parse("google.navigation:q=" + business.getLat() + "," + business.getLon()));
+                context.startActivity(directionsIntent);
             }
         });
         //listen for click to open phone
@@ -124,6 +129,37 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
                 }
             });
         }
+        //now we just set onClick listeners for all the other components of the view to open
+        //that business
+        holder.businessPhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View photo) {
+                //open new activity
+                Log.d(TAG, "clicked business");
+                context.startActivity(new Intent(context, SingleBusinessActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+            }
+        });
+        holder.companyName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View company) {
+                //open new activity
+                Log.d(TAG, "clicked business");
+            }
+        });
+        holder.businessType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View type) {
+                //open new activity
+                Log.d(TAG, "clicked business");
+            }
+        });
+        holder.distance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View distance) {
+                //open new activity
+                Log.d(TAG, "clicked business");
+            }
+        });
     }
     public int getItemCount() {
         return businesses.size();

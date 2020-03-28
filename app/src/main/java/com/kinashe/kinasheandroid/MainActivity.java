@@ -1,7 +1,6 @@
 package com.kinashe.kinasheandroid;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -55,10 +54,6 @@ public class MainActivity extends AppCompatActivity
     //for phone permissions
     public static final int CALL_REQUEST = 2;
 
-    //for code reuse, notice all activities have identical
-    //setupBottomBar methods
-    private Context mContext = MainActivity.this;
-
     //for handling call requests
     private Intent callIntent;
 
@@ -98,7 +93,7 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "setupBottomBar: setting up BottomNavigationView");
         BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottombar);
         BottomBarHelper.setupBottomNavigationView(bottomNavigationViewEx);
-        BottomBarHelper.enableNavigation(mContext, bottomNavigationViewEx);
+        BottomBarHelper.enableNavigation(MainActivity.this, bottomNavigationViewEx);
         Menu menu = bottomNavigationViewEx.getMenu();
         MenuItem menuItem = menu.getItem(ACTIVITY_NUM);
         menuItem.setChecked(true);

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="150dp"
+    android:background="@color/darkBlue">
+
+    <ImageView
+        android:id="@+id/coupon"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/coupon_background"></ImageView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="wrap_content"
+        android:layout_width="390dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:paddingLeft="48dp"
+            android:paddingRight="100dp"
+            android:text="jkjhjhkjhjhgsadfjgsadfjgsadhfgasgf"
+            android:textColor="@color/iconWhite"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/deal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title"
+            android:paddingLeft="48dp"
+            android:paddingRight="95dp"
+            android:text="jkjhjhkjhjhgsadfjgsadfjgsadhfgasassgf"
+            android:textColor="@color/iconWhite"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/availability"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/deal"
+            android:paddingLeft="48dp"
+            android:paddingRight="95dp"
+            android:text="jkjhjhkjhjhgsadfjgsadfjgsadhfgasgf"
+            android:textColor="@color/iconWhite"
+            android:textSize="10sp" />
+
+        <TextView
+            android:id="@+id/expiration"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/availability"
+            android:paddingLeft="48dp"
+            android:paddingRight="95dp"
+            android:text="jkjhjhkjhjhgsadfjgsadfjgsassadhfgasgf"
+            android:textColor="@color/iconWhite"
+            android:textSize="10sp" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,8 +6,6 @@
     android:layout_height="105dp"
     android:layout_margin="4dp"
     app:cardCornerRadius="4dp">
-<!--    android:clickable="true"-->
-<!--    android:foreground="?android:attr/selectableItemBackground">-->
 
     <ImageView
         android:id="@+id/image_id"
