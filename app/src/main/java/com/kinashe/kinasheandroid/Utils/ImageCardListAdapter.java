@@ -47,7 +47,7 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
             public void onClick(View v) {
                 TextView text = v.findViewById(R.id.place_name_id);
                 String cardText = (String) text.getText();
-                TextView topText =
+                TextView topText = null;
                 int image = mData.get(position).getImage(); //get the image we're clicking on
                 mData = new ImageCardHelper(cardText).get();
                 if (mData != null) {
