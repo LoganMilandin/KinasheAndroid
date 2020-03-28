@@ -1,6 +1,9 @@
 package com.kinashe.kinasheandroid.Utils;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kinashe.kinasheandroid.NearbyAllActivity;
 import com.kinashe.kinasheandroid.R;
 
 import java.util.List;
@@ -43,10 +47,16 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
             public void onClick(View v) {
                 TextView text = v.findViewById(R.id.place_name_id);
                 String cardText = (String) text.getText();
+                int image = mData.get(position).getImage(); //get the image we're clicking on
                 mData = new ImageCardHelper(cardText).get();
                 if (mData != null) {
                     TopBarHelper.setTopText(cardText, mContext);
                     notifyDataSetChanged();
+                } else {
+                    Intent intent = new Intent(mContext, NearbyAllActivity.class);
+                    intent.putExtra("image", image);
+                    intent.putExtra("topText", cardText);
+                    mContext.startActivity(intent);
                 }
             }
         });
