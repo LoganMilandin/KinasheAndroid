@@ -11,7 +11,7 @@
         app:layout_constraintTop_toTopOf="parent"
         android:layout_height="50dp">
 
-        <include layout="@layout/layout_topbar_logo" />
+        <include layout="@layout/layout_topbar_single_business" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ScrollView
