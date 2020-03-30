@@ -1,10 +1,12 @@
 package com.kinashe.kinasheandroid.Firebase;
 
+import java.io.Serializable;
+
 /**
  * represents a single coupon for a given business. A BusinessInfo object contains
  * a list of coupons
  */
-public class Coupon {
+public class Coupon implements Serializable {
     private String availability;
     private String availabilityTrans;
     private String deal;

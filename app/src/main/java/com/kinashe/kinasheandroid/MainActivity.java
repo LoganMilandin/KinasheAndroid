@@ -85,6 +85,13 @@ public class MainActivity extends AppCompatActivity
         locationProvider = LocationServices.getFusedLocationProviderClient(this);
         navigationManager = new NavigationManager(MainActivity.this);
         //make the homepage and fill with firebase data
+        initializeFragments();
+        //make sure everything else is loaded before setting up navbar
+        setupBottomBar();
+    }
+
+    private void initializeFragments() {
+        manager = getSupportFragmentManager();
         homeFragment = new HomeFragment();
         getFirebaseData();
         //make places fragment with title in a bundle
@@ -98,15 +105,19 @@ public class MainActivity extends AppCompatActivity
         transportationBundle.putString("title", "Transportation | መጓጓዣ");
         transportationFragment.setArguments(transportationBundle);
         addBusinessFragment = new AddBusinessFragment();
-        manager = getSupportFragmentManager();
-        manager.beginTransaction().add(R.id.topbar_and_content, placesFragment).hide(placesFragment).commit();
-        manager.beginTransaction().add(R.id.topbar_and_content, transportationFragment).hide(transportationFragment).commit();
-        manager.beginTransaction().add(R.id.topbar_and_content, addBusinessFragment).hide(addBusinessFragment).commit();
-        manager.beginTransaction().add(R.id.topbar_and_content, homeFragment).commit();
+        //this is part of the workaround for lag when you first click the places tab
+        //ultimately we want to hide all of these fragments except the homepage, but
+        //if we hide them here they don't actually initialize their views before
+        //getting hidden. So, we do the actual hiding after the firebase data is retrieved.
+        manager.beginTransaction().
+                add(R.id.topbar_and_content, placesFragment).
+                add(R.id.topbar_and_content, transportationFragment).
+                add(R.id.topbar_and_content, addBusinessFragment).
+                add(R.id.topbar_and_content, homeFragment).
+                commit();
         activeFragment = homeFragment;
-        //make sure everything else is loaded before setting up navbar
-        setupBottomBar();
     }
+
 
     private void setupHomepage() {
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -159,10 +170,17 @@ public class MainActivity extends AppCompatActivity
                                     if (businessObj.isVerified()) {
                                         businesses.add(business.getValue(BusinessInfo.class));
                                     }
-                                    Log.d(TAG, "got data");
                                 }
                             }
                         }
+                        //the other fragment views should have loaded in the background while
+                        //data was fetched, so hide them now
+                        manager.
+                                beginTransaction().
+                                hide(placesFragment).
+                                hide(transportationFragment).
+                                hide(addBusinessFragment).
+                                commit();
                         setupHomepage();
                     }
                     @Override

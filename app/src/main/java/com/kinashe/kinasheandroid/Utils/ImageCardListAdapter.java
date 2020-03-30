@@ -56,6 +56,7 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+        Log.d(TAG, "binding image card adapter");
         final ImageCard card = cards.get(position);
         holder.place_name.setText(card.getText());
         holder.place_img.setImageResource(card.getImage());

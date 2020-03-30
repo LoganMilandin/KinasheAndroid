@@ -20,7 +20,7 @@ import java.util.List;
 
 public class PlacesOrTransportationFragment extends Fragment {
 
-    private static final String TAG = "Places Fragment";
+    private static final String TAG = "PlacesOrTransportation";
 
     private View thisView;
     private RecyclerView typeGrid;
@@ -33,11 +33,13 @@ public class PlacesOrTransportationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisView = inflater.inflate(R.layout.fragment_places_or_transportation, container, false);
+        Log.d(TAG, "creating view");
         createGridLayout();
         return thisView;
     }
 
     public PlacesOrTransportationFragment() {
+        Log.d(TAG, "creating card helper");
         cardHelper = new ImageCardHelper();
     }
 

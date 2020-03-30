@@ -29,6 +29,8 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
     private final Location myLocation;
     private MainActivity context;
 
+    private int totalBinds;
+
     private List<BusinessInfo> businesses;
 
     public static class BusinessViewHolder extends RecyclerView.ViewHolder {
@@ -77,6 +79,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
             }
         });
         this.businesses = businesses;
+        totalBinds = 0;
     }
 
     @Override
@@ -91,6 +94,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
 
     @Override
     public void onBindViewHolder(BusinessViewHolder holder, int position) {
+        Log.d(TAG, "binding homepage adapter");
         final BusinessInfo business = businesses.get(position);
         List<String> photos = business.getPhotos();
         //not sure if failed photo submissions will show up as null or
@@ -129,7 +133,6 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
             public void onClick(View phoneIcon) {
                 Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
                 phoneCallIntent.setData(Uri.parse("tel:" + business.getPhone()));
-                Log.d(TAG, "starting phone dial function");
                 PermissionUtils.makePhoneCall(context, phoneCallIntent, MainActivity.CALL_REQUEST_CODE);
             }
         });
@@ -167,6 +170,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
             public void onClick(View company) {
                 //open new activity
                 Log.d(TAG, "clicked business");
+                context.navigationManager.selectSingleBusinessFromHomepage(business);
             }
         });
         holder.businessType.setOnClickListener(new View.OnClickListener() {
@@ -174,6 +178,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
             public void onClick(View type) {
                 //open new activity
                 Log.d(TAG, "clicked business");
+                context.navigationManager.selectSingleBusinessFromHomepage(business);
             }
         });
         holder.distance.setOnClickListener(new View.OnClickListener() {
@@ -181,6 +186,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
             public void onClick(View distance) {
                 //open new activity
                 Log.d(TAG, "clicked business");
+                context.navigationManager.selectSingleBusinessFromHomepage(business);
             }
         });
     }
