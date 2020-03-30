@@ -19,18 +19,17 @@ package com.kinashe.kinasheandroid.Utils;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.R;
 
 /**
@@ -38,15 +37,7 @@ import com.kinashe.kinasheandroid.R;
  */
 public abstract class PermissionUtils {
 
-    /**
-     * Requests the fine location permission. If a rationale with an additional explanation should
-     * be shown to the user, displays a dialog that triggers the request.
-     */
-    public static void requestPermission(AppCompatActivity activity, int requestId,
-                                         String permission, boolean finishActivity) {
-        // Location permission has not been granted yet, request it.
-        ActivityCompat.requestPermissions(activity, new String[]{permission}, requestId);
-    }
+    private static final String TAG = "PermissionUtils";
 
     /**
      * Checks if the result contains a {@link PackageManager#PERMISSION_GRANTED} result for a
@@ -182,15 +173,11 @@ public abstract class PermissionUtils {
 
     //extra method for actually making a call. Doesn't really belong in this class but
     //I didn't want to make another class just for this or put it in HomepageListAdapter
-    public static void makePhoneCall(Context context, Intent intent, int requestId) {
+    public static void makePhoneCall(MainActivity context, Intent intent, int requestId) {
         if (ContextCompat.checkSelfPermission(context,
                 Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            //Doesn't know context has the setCallIntentMethod so we cast to this
-            //interface (instead of hardcoding MainActivity) in order to make this
-            //code usable by anything needing to make a call
-            ActivityThatMakesCalls activity = (ActivityThatMakesCalls) context;
-            activity.setCallIntent(intent);
-            requestPermission((AppCompatActivity) context, requestId, Manifest.permission.CALL_PHONE, false);
+            context.setCallIntent(intent);
+            ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.CALL_PHONE}, requestId);
         } else {
             context.startActivity(intent);
         }

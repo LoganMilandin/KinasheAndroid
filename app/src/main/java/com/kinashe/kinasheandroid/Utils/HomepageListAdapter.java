@@ -1,6 +1,5 @@
 package com.kinashe.kinasheandroid.Utils;
 
-import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
@@ -17,9 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.R;
-import com.kinashe.kinasheandroid.SingleBusinessActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapter.BusinessViewHolder> {
@@ -27,7 +27,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
     private static final String TAG = "HomepageListAdapter";
 
     private final Location myLocation;
-    private Context context;
+    private MainActivity context;
 
     private List<BusinessInfo> businesses;
 
@@ -54,10 +54,29 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
 
     }
 
-    public HomepageListAdapter(List<BusinessInfo> businesses, Context context, Location location) {
-        this.businesses = businesses;
+    public HomepageListAdapter(List<BusinessInfo> businesses, MainActivity context, Location location) {
         this.context = context;
         this.myLocation = location;
+        Collections.sort(businesses, new Comparator<BusinessInfo>() {
+            @Override
+            public int compare(BusinessInfo first, BusinessInfo second) {
+                if (first.getMonthlyPayment() > second.getMonthlyPayment()) {
+                    return -1;
+                } else if (second.getMonthlyPayment() > first.getMonthlyPayment()) {
+                    return 1;
+                } else {
+                    Location firstLocation = new Location("");
+                    firstLocation.setLatitude(Double.parseDouble(first.getLat()));
+                    firstLocation.setLongitude(Double.parseDouble(first.getLon()));
+                    Location secondLocation = new Location("");
+                    secondLocation.setLatitude(Double.parseDouble(second.getLat()));
+                    secondLocation.setLongitude(Double.parseDouble(second.getLon()));
+                    Log.d(TAG, String.valueOf(myLocation.distanceTo(secondLocation)));
+                    return (int) (myLocation.distanceTo(firstLocation) - myLocation.distanceTo(secondLocation));
+                }
+            }
+        });
+        this.businesses = businesses;
     }
 
     @Override
@@ -83,7 +102,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
         holder.businessType.setText(business.getBusinessType());
         if (myLocation != null) {
             Location targetLocation = new Location("");
-            targetLocation.setLatitude(Double.parseDouble(business.getLat()));//your coords of course
+            targetLocation.setLatitude(Double.parseDouble(business.getLat()));
             targetLocation.setLongitude(Double.parseDouble(business.getLon()));
             //calculation and rounding done all at once
             double distanceInKm = (int) (myLocation.distanceTo(targetLocation) / 10.0) / 100.0;
@@ -111,7 +130,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
                 Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
                 phoneCallIntent.setData(Uri.parse("tel:" + business.getPhone()));
                 Log.d(TAG, "starting phone dial function");
-                PermissionUtils.makePhoneCall(context, phoneCallIntent, MainActivity.CALL_REQUEST);
+                PermissionUtils.makePhoneCall(context, phoneCallIntent, MainActivity.CALL_REQUEST_CODE);
             }
         });
         //again we expect an empty string here but it never hurts to be safe
@@ -122,9 +141,13 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
             holder.searchLogo.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View websiteIcon) {
-                    String website = business.getWebsite();
-                    Log.d(TAG, website);
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
+                    String website = business.getWebsite().toLowerCase();
+                    Intent browserIntent;
+                    if (website.contains("http")) {
+                        browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+                    } else {
+                        browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + website));
+                    }
                     context.startActivity(browserIntent);
                 }
             });
@@ -136,7 +159,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
             public void onClick(View photo) {
                 //open new activity
                 Log.d(TAG, "clicked business");
-                context.startActivity(new Intent(context, SingleBusinessActivity.class).addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION));
+                context.navigationManager.selectSingleBusinessFromHomepage(business);
             }
         });
         holder.companyName.setOnClickListener(new View.OnClickListener() {

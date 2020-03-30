@@ -4,7 +4,6 @@
     package="com.kinashe.kinasheandroid">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
@@ -16,17 +15,14 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PlacesActivity"></activity>
-        <activity android:name=".TransportationActivity"></activity>
-        <activity android:name=".AddBusinessActivity"></activity>
-        <activity android:name=".SingleBusinessActivity"></activity>
     </application>
 
 </manifest>

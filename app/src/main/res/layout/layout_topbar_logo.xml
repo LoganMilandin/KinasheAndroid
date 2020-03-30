@@ -16,7 +16,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/topbar"
-                android:background="@color/lighterBlue">
+                android:background="@color/lighterBlue"
+                app:contentInsetStart="0dp">
 
                 <ImageView
                     android:layout_width="wrap_content"

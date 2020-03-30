@@ -1,12 +1,13 @@
 package com.kinashe.kinasheandroid.Firebase;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * represents a single company's information from the database. Database
  * getters return objects of this class
  */
-public class BusinessInfo {
+public class BusinessInfo implements Serializable {
     private String businessType;
     private String companyName;
     private String description;
@@ -17,6 +18,7 @@ public class BusinessInfo {
     private String lat;
     private String lon;
     private int monthlyPayment;
+    private boolean verified;
 
 
     private List<List<String>> hours;
@@ -79,6 +81,10 @@ public class BusinessInfo {
         return coupons;
     }
 
+    public boolean isVerified() {
+        return verified;
+    }
+
     public String toString() {
         return "\ntype: " + businessType + "\nname: " + companyName + "\ndescription: "
                 + description + "\ndescriptionTrans: " + descriptionTrans
@@ -86,4 +92,5 @@ public class BusinessInfo {
                 + "\nmonthlyPayment" + monthlyPayment + "\nhours: " + hours
                 + "\nphotos: " + photos + "\ncoupons: " + coupons;
     }
+
 }

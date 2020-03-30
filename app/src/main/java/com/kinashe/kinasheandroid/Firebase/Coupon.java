@@ -12,6 +12,7 @@ public class Coupon {
     private String title;
     private String titleTrans;
     private String expiration;
+    private boolean active;
     //gives Unix time in milliseconds. Need to check against current
     //date to decide whether to render
     private long expTimestamp;
@@ -47,41 +48,12 @@ public class Coupon {
         return expiration;
     }
 
-
-    public void setAvailability(String availability) {
-        this.availability = availability;
-    }
-
-    public void setAvailabilityTrans(String availabilityTrans) {
-        this.availabilityTrans = availabilityTrans;
-    }
-
-    public void setDeal(String deal) {
-        this.deal = deal;
-    }
-
-    public void setDealTrans(String dealTrans) {
-        this.dealTrans = dealTrans;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setTitleTrans(String titleTrans) {
-        this.titleTrans = titleTrans;
-    }
-
-    public void setExpiration(String expiration) {
-        this.expiration = expiration;
-    }
-
-    public void setExpTimestamp(long expTimestamp) {
-        this.expTimestamp = expTimestamp;
-    }
-
     public long getExpTimestamp() {
         return expTimestamp;
+    }
+
+    public boolean isActive() {
+        return active;
     }
 
     public String toString() {

@@ -9,7 +9,7 @@ import com.kinashe.kinasheandroid.R;
 public class TopBarHelper {
     public static void setTopText(String text, Context context) {
         Activity thisActivity = (Activity) context;
-        TextView topText = thisActivity.findViewById(R.id.toptext);
+        TextView topText = thisActivity.findViewById(R.id.title);
         topText.setText(text);
     }
 }

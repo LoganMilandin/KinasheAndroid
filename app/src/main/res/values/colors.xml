@@ -5,7 +5,6 @@
     <color name="borderBlue">#002b4d</color>
     <color name="iconGray">#909090</color>
     <color name="iconWhite">#ffffff</color>
-    <color name="imageGray">#3080b5</color>
+    <color name="couponBrown">#C8B39A</color>
     <color name="orange">#ff8c3b</color>
-    <!--    <color name="imageGray">#1a1a1a</color>-->
 </resources>

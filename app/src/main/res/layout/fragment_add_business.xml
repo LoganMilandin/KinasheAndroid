@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/darkBlue">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/topbar_container"
+        android:layout_width="match_parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_height="50dp">
+
+        <include layout="@layout/layout_topbar_logo" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:id="@+id/kinashe_logo"
+        android:layout_width="match_parent"
+        android:layout_height="230dp"
+        app:layout_constraintTop_toBottomOf="@id/topbar_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="35dp"
+        android:src="@drawable/kinashe_logo_words" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/thanks_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/kinashe_logo"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="17dp">
+
+        <TextView
+            android:id="@+id/thanks"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="Thank you for using Kinashe!"
+            android:textColor="@color/iconWhite"
+            android:textSize="20dp"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:id="@+id/thanks_trans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/thanks"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="ቅናሽ ስለተጠቀሙ እናመሰግናለን!"
+            android:textColor="@color/iconWhite"
+            android:textSize="20dp"
+            android:includeFontPadding="false" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/add_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/thanks_container"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:id="@+id/add_here"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="Add your business here!"
+            android:textColor="@color/iconWhite"
+            android:textSize="20dp"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:id="@+id/add_here_trans"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/add_here"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="ንግድዎን እዚህ ያክሉ!"
+            android:textColor="@color/iconWhite"
+            android:textSize="20dp"
+            android:includeFontPadding="false" />
+
+        <TextView
+            android:id="@+id/kinashe_domain"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/add_here_trans"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            android:text="kinashe.com"
+            android:textColor="@color/iconWhite"
+            android:textSize="20dp"
+            android:includeFontPadding="false" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
