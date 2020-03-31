@@ -176,30 +176,34 @@ public class NavigationManager {
     }
 
     public void handleLeafNodeClickedPlaces(Bundle categoryContainer) {
-        context.nearbyAllPlacesFragment = new NearbyAllFragment();
-        context.nearbyAllPlacesFragment.setArguments(categoryContainer);
-        context.manager.
-                beginTransaction().
-                hide(context.placesFragment).
-                add(R.id.topbar_and_content, context.nearbyAllPlacesFragment).
-                show(context.nearbyAllPlacesFragment).
-                commit();
-        context.activeFragment = context.nearbyAllPlacesFragment;
-        this.isNearbyAllSelectedPlaces = true;
+        if (context.nearbyAllPlacesFragment == null) {
+            context.nearbyAllPlacesFragment = new NearbyAllFragment();
+            context.nearbyAllPlacesFragment.setArguments(categoryContainer);
+            context.manager.
+                    beginTransaction().
+                    hide(context.placesFragment).
+                    add(R.id.topbar_and_content, context.nearbyAllPlacesFragment).
+                    show(context.nearbyAllPlacesFragment).
+                    commit();
+            context.activeFragment = context.nearbyAllPlacesFragment;
+            this.isNearbyAllSelectedPlaces = true;
+        }
     }
 
     public void handleLeafNodeClickedTransportation(Bundle categoryContainer) {
-        Log.d(TAG, "hello world");
-        context.nearbyAllTransportationFragment = new NearbyAllFragment();
-        context.nearbyAllTransportationFragment.setArguments(categoryContainer);
-        context.manager.
-                beginTransaction().
-                hide(context.transportationFragment).
-                add(R.id.topbar_and_content, context.nearbyAllTransportationFragment).
-                show(context.nearbyAllTransportationFragment).
-                commit();
-        context.activeFragment = context.nearbyAllTransportationFragment;
-        this.isNearbyAllSelectedTransportation = true;
+        if (context.nearbyAllTransportationFragment == null) {
+            Log.d(TAG, "hello world");
+            context.nearbyAllTransportationFragment = new NearbyAllFragment();
+            context.nearbyAllTransportationFragment.setArguments(categoryContainer);
+            context.manager.
+                    beginTransaction().
+                    hide(context.transportationFragment).
+                    add(R.id.topbar_and_content, context.nearbyAllTransportationFragment).
+                    show(context.nearbyAllTransportationFragment).
+                    commit();
+            context.activeFragment = context.nearbyAllTransportationFragment;
+            this.isNearbyAllSelectedTransportation = true;
+        }
     }
 
     public void handleBackButtonClickedFromNearbyAllPlaces() {

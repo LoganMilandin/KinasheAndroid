@@ -7,4 +7,6 @@
     <color name="iconWhite">#ffffff</color>
     <color name="couponBrown">#C8B39A</color>
     <color name="orange">#ff8c3b</color>
+    <color name="searchBlue">#2b72a1</color>
+    <color name="transparent">#00000000</color>
 </resources>
