@@ -30,10 +30,10 @@ public class PlacesOrTransportationFragment extends Fragment {
     private ImageCardHelper cardHelper;
 
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisView = inflater.inflate(R.layout.fragment_places_or_transportation, container, false);
-        Log.d(TAG, "creating view");
         createGridLayout();
         return thisView;
     }
@@ -63,4 +63,5 @@ public class PlacesOrTransportationFragment extends Fragment {
     public ImageCardHelper getCardHelper() {
         return cardHelper;
     }
+
 }

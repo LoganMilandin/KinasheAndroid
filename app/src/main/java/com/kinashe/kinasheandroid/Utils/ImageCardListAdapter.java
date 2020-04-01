@@ -13,6 +13,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kinashe.kinasheandroid.MainActivity;
+import com.kinashe.kinasheandroid.NearbyAllFragment;
 import com.kinashe.kinasheandroid.PlacesOrTransportationFragment;
 import com.kinashe.kinasheandroid.R;
 
@@ -74,7 +75,8 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
                     gridItemSelectedHelper(selectedText, titleText);
                     notifyDataSetChanged();
                 } else {
-                    Log.d(TAG, "clicked me");
+                    NearbyAllFragment newFragment = new NearbyAllFragment();
+                    newFragment.setParent(fragment);
                     ImageCard selectedImage = cards.get(position);
                     int image = selectedImage.getImage();
                     Bundle categoryContainer = new Bundle();
@@ -82,10 +84,12 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
                     categoryContainer.putInt("image", image);
                     if (fragment.getArguments().getString("title").equals("Places | ቦታዎች")) {
                         categoryContainer.putString("screen", "Places | ቦታዎች");
-                        context.navigationManager.handleLeafNodeClickedPlaces(categoryContainer);
+                        newFragment.setArguments(categoryContainer);
+                        context.navigationManager.handleLeafNodeClickedPlaces(newFragment);
                     } else {
                         categoryContainer.putString("screen", "Transportation | መጓጓዣ");
-                        context.navigationManager.handleLeafNodeClickedTransportation(categoryContainer);
+                        newFragment.setArguments(categoryContainer);
+                        context.navigationManager.handleLeafNodeClickedTransportation(newFragment);
                     }
                 }
             }

@@ -3,6 +3,7 @@ package com.kinashe.kinasheandroid.Utils;
 import android.content.Intent;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,23 +12,26 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
+import com.kinashe.kinasheandroid.HomeFragment;
 import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.R;
+import com.kinashe.kinasheandroid.SearchBusinessFragment;
+import com.kinashe.kinasheandroid.SingleBusinessFragment;
 import com.squareup.picasso.Picasso;
 
-import java.util.Collections;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 
 public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapter.BusinessViewHolder> {
 
     private static final String TAG = "HomepageListAdapter";
 
-    private final Location myLocation;
     private MainActivity context;
+    private Fragment fragment;
 
     private int totalBinds;
 
@@ -56,29 +60,14 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
 
     }
 
-    public HomepageListAdapter(List<BusinessInfo> businesses, MainActivity context, Location location) {
+    public HomepageListAdapter(List<BusinessInfo> businesses, MainActivity context, Fragment fragment) {
         this.context = context;
-        this.myLocation = location;
-        Collections.sort(businesses, new Comparator<BusinessInfo>() {
-            @Override
-            public int compare(BusinessInfo first, BusinessInfo second) {
-                if (first.getMonthlyPayment() > second.getMonthlyPayment()) {
-                    return -1;
-                } else if (second.getMonthlyPayment() > first.getMonthlyPayment()) {
-                    return 1;
-                } else {
-                    Location firstLocation = new Location("");
-                    firstLocation.setLatitude(Double.parseDouble(first.getLat()));
-                    firstLocation.setLongitude(Double.parseDouble(first.getLon()));
-                    Location secondLocation = new Location("");
-                    secondLocation.setLatitude(Double.parseDouble(second.getLat()));
-                    secondLocation.setLongitude(Double.parseDouble(second.getLon()));
-                    Log.d(TAG, String.valueOf(myLocation.distanceTo(secondLocation)));
-                    return (int) (myLocation.distanceTo(firstLocation) - myLocation.distanceTo(secondLocation));
-                }
-            }
-        });
-        this.businesses = businesses;
+        this.fragment = fragment;
+        if (businesses != null) {
+            this.businesses = businesses;
+        } else {
+            this.businesses = new ArrayList<>();
+        }
         totalBinds = 0;
     }
 
@@ -104,13 +93,8 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
         }
         holder.companyName.setText(business.getCompanyName());
         holder.businessType.setText(business.getBusinessType());
-        if (myLocation != null) {
-            Location targetLocation = new Location("");
-            targetLocation.setLatitude(Double.parseDouble(business.getLat()));
-            targetLocation.setLongitude(Double.parseDouble(business.getLon()));
-            //calculation and rounding done all at once
-            double distanceInKm = (int) (myLocation.distanceTo(targetLocation) / 10.0) / 100.0;
-            holder.distance.setText(distanceInKm + " km");
+        if (context.location != null) {
+            holder.distance.setText(business.getDistance() + " km");
         } else {
             holder.distance.setText("location services disabled or unavailable");
         }
@@ -157,40 +141,33 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
         }
         //now we just set onClick listeners for all the other components of the view to open
         //that business
-        holder.businessPhoto.setOnClickListener(new View.OnClickListener() {
+        View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View photo) {
-                //open new activity
-                Log.d(TAG, "clicked business");
-                context.navigationManager.selectSingleBusinessFromHomepage(business);
+                Log.d(TAG, "clicked");
+                SingleBusinessFragment newFragment = new SingleBusinessFragment();
+                Bundle businessWrapper = new Bundle();
+                businessWrapper.putSerializable("businessInfo", business);
+                businessWrapper.putString("parent type", fragment instanceof HomeFragment?"home":"search");
+                newFragment.setArguments(businessWrapper);
+                if (fragment instanceof HomeFragment) {
+                    context.navigationManager.handleSingleBusinessSelectedFromHomepage(newFragment);
+                } else if (fragment instanceof SearchBusinessFragment) {
+                    context.navigationManager.handleSingleBusinessSelectedFromSearch(newFragment);
+                }
             }
-        });
-        holder.companyName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View company) {
-                //open new activity
-                Log.d(TAG, "clicked business");
-                context.navigationManager.selectSingleBusinessFromHomepage(business);
-            }
-        });
-        holder.businessType.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View type) {
-                //open new activity
-                Log.d(TAG, "clicked business");
-                context.navigationManager.selectSingleBusinessFromHomepage(business);
-            }
-        });
-        holder.distance.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View distance) {
-                //open new activity
-                Log.d(TAG, "clicked business");
-                context.navigationManager.selectSingleBusinessFromHomepage(business);
-            }
-        });
+        };
+        holder.businessPhoto.setOnClickListener(listener);
+        holder.companyName.setOnClickListener(listener);
+        holder.businessType.setOnClickListener(listener);
+        holder.distance.setOnClickListener(listener);
     }
     public int getItemCount() {
         return businesses.size();
+    }
+
+    public void changeList(List<BusinessInfo> newList) {
+        this.businesses = newList;
+        notifyDataSetChanged();
     }
 }

@@ -51,7 +51,7 @@ public class HomeFragment extends Fragment {
         Log.d(TAG, "setting up homepage");
         businessDisplay = thisView.findViewById(R.id.business_display);
         businessDisplay.setLayoutManager(new LinearLayoutManager(getActivity()));
-        displayAdapter = new HomepageListAdapter(businesses, (MainActivity) getActivity(), location);
+        displayAdapter = new HomepageListAdapter(businesses, (MainActivity) getActivity(), this);
         businessDisplay.setAdapter(displayAdapter);
     }
 

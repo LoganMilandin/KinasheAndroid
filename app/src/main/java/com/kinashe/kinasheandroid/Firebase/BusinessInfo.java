@@ -17,6 +17,7 @@ public class BusinessInfo implements Serializable {
     private String phone;
     private String lat;
     private String lon;
+    private double distance;
     private int monthlyPayment;
     private boolean verified;
 
@@ -62,6 +63,17 @@ public class BusinessInfo implements Serializable {
 
     public String getLon() {
         return lon;
+    }
+
+    //getters and setters for custom distance field
+
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
     //getter for payment amount, used for sorting

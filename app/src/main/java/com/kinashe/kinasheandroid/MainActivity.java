@@ -32,6 +32,8 @@ import com.kinashe.kinasheandroid.Utils.NavigationManager;
 import com.kinashe.kinasheandroid.Utils.PermissionUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity
     //for phone permissions
     public static final int CALL_REQUEST_CODE = 2;
 
+    public Location location;
+
     //for handling call requests
     private Intent callIntent;
 
@@ -57,24 +61,30 @@ public class MainActivity extends AppCompatActivity
     private FusedLocationProviderClient locationProvider;
 
     //for firebase data
-    private List<BusinessInfo> businesses;
+    public List<BusinessInfo> businesses;
 
     //for navigation
     public NavigationManager navigationManager;
 
     //fragments for home view
-    public Fragment homeFragment;
-    public Fragment singleBusinessFragmentHome;
+    public HomeFragment homeFragment;
+    public SingleBusinessFragment singleBusinessFragmentHome;
+
+    //fragments for search view
+    public SearchBusinessFragment searchFragment;
+    public SingleBusinessFragment singleBusinessFragmentSearch;
 
     //fragments for places view
-    public Fragment placesFragment;
-    public Fragment nearbyAllPlacesFragment;
+    public PlacesOrTransportationFragment placesFragment;
+    public NearbyAllFragment nearbyAllPlacesFragment;
+    public NearbyAllListFragment nearbyAllPlacesListFragment;
 
     //fragments for transportation view
-    public Fragment transportationFragment;
-    public Fragment nearbyAllTransportationFragment;
+    public PlacesOrTransportationFragment transportationFragment;
+    public NearbyAllFragment nearbyAllTransportationFragment;
+    public NearbyAllListFragment nearbyAllTransportationListFragment;
 
-    public Fragment addBusinessFragment;
+    public AddBusinessFragment addBusinessFragment;
     public Fragment activeFragment;
     public FragmentManager manager;
 
@@ -94,6 +104,7 @@ public class MainActivity extends AppCompatActivity
         manager = getSupportFragmentManager();
         homeFragment = new HomeFragment();
         getFirebaseData();
+        searchFragment = new SearchBusinessFragment();
         //make places fragment with title in a bundle
         placesFragment = new PlacesOrTransportationFragment();
         Bundle placeBundle = new Bundle();
@@ -110,6 +121,7 @@ public class MainActivity extends AppCompatActivity
         //if we hide them here they don't actually initialize their views before
         //getting hidden. So, we do the actual hiding after the firebase data is retrieved.
         manager.beginTransaction().
+                add(R.id.topbar_and_content, searchFragment).
                 add(R.id.topbar_and_content, placesFragment).
                 add(R.id.topbar_and_content, transportationFragment).
                 add(R.id.topbar_and_content, addBusinessFragment).
@@ -131,10 +143,33 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void populateHomepage(Location location) {
-        Log.d(TAG, "business list size: " + businesses.size());
-        HomeFragment home = (HomeFragment) homeFragment;
-        home.setupScrollableContent(businesses, location);
+    public void populateHomepage() {
+        if (location != null) {
+            for (int i = 0; i < businesses.size(); i++) {
+                Location targetLocation = new Location("");
+                targetLocation.setLatitude(Double.parseDouble(businesses.get(i).getLat()));
+                targetLocation.setLongitude(Double.parseDouble(businesses.get(i).getLon()));
+                //calculation and rounding done all at once
+                businesses.get(i).setDistance((int) (location.distanceTo(targetLocation) / 10.0) / 100.0);
+            }
+        }
+        Collections.sort(businesses, new Comparator<BusinessInfo>() {
+            @Override
+            public int compare(BusinessInfo first, BusinessInfo second) {
+                if (first.getMonthlyPayment() > second.getMonthlyPayment()) {
+                    return -1;
+                } else if (second.getMonthlyPayment() > first.getMonthlyPayment()) {
+                    return 1;
+                } else if (location != null){
+                    return (int) (first.getDistance() - second.getDistance());
+                } else {
+                    return 0;
+                }
+            }
+        });
+        //also pass input list to search screen while we're here
+        ((SearchBusinessFragment) searchFragment).setupScrollableContent(businesses, location);
+        ((HomeFragment) homeFragment).setupScrollableContent(businesses, location);
     }
 
     private void populateHomepageWithLocation() {
@@ -143,13 +178,8 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onSuccess(Location location) {
                         // Got last known location. In some rare situations this can be null.
-                        Log.d(TAG, "got location: " + (location == null));
-                        if (location != null) {
-                            Log.d(TAG, "location not null");
-                            populateHomepage(location);
-                        } else {
-                            populateHomepage(null);
-                        }
+                        MainActivity.this.location = location;
+                        populateHomepage();
                     }
                 });
     }
@@ -162,7 +192,6 @@ public class MainActivity extends AppCompatActivity
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot data) {
-                        businesses = new ArrayList<>();
                         for (DataSnapshot businessType : data.getChildren()) {
                             if (!businessType.getKey().equals("Advertisements")) {
                                 for (DataSnapshot business : businessType.getChildren()) {
@@ -177,6 +206,7 @@ public class MainActivity extends AppCompatActivity
                         //data was fetched, so hide them now
                         manager.
                                 beginTransaction().
+                                hide(searchFragment).
                                 hide(placesFragment).
                                 hide(transportationFragment).
                                 hide(addBusinessFragment).
@@ -203,7 +233,7 @@ public class MainActivity extends AppCompatActivity
                 populateHomepageWithLocation();
             } else {
                 Log.d(TAG, "location permission not granted");
-                populateHomepage(null);
+                populateHomepage();
             }
         } else if (requestCode == CALL_REQUEST_CODE) {
             if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.CALL_PHONE)) {

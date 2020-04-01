@@ -44,6 +44,7 @@ public class SingleBusinessFragment extends Fragment {
     private List<Coupon> myCoupons;
     private boolean isTranslated;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = (MainActivity) getActivity();
@@ -168,7 +169,12 @@ public class SingleBusinessFragment extends Fragment {
             @Override
             public void onClick(View button) {
                 Log.d(TAG, "clicked back");
-                context.navigationManager.clickBackFromSingleBusinessHome();
+                if (getArguments().getString("parent type").equals("home")) {
+                    context.navigationManager.handleBackClickedFromSingleBusinessHome();
+                } else {
+                    context.navigationManager.handleBackClickedFromSingleBusinessSearch();
+                }
+
             }
         });
         View translateButton = thisView.findViewById(R.id.translate_button);
