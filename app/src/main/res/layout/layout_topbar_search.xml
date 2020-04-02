@@ -45,7 +45,7 @@
                     android:inputType="text|textNoSuggestions"
                     android:textColor="@color/iconWhite"
                     android:background="@color/transparent"
-                    android:hint="Search"/>
+                    android:hint="Search | ይፈልጉ"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
 
