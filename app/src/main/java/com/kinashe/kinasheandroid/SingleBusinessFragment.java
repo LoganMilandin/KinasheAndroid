@@ -25,6 +25,7 @@ import java.util.List;
 public class SingleBusinessFragment extends CustomFragment {
 
     private static final String TAG = "SingleBusinessFragment";
+    private int navbarIndex;
 
     public MainActivity context;
 

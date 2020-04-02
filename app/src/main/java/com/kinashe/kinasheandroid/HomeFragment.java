@@ -28,6 +28,7 @@ public class HomeFragment extends CustomFragment {
     public MainActivity context;
 
     private static final String TAG = "HomeFragment";
+    private int navbarIndex = 0;
     private View thisView;
 
     //handlers for scrolling view

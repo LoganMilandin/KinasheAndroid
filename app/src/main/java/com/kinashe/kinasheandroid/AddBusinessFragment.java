@@ -19,14 +19,16 @@ public class AddBusinessFragment extends CustomFragment {
     public MainActivity context;
 
     private static final String TAG = "AddBusinessPage";
+    private int navbarIndex = 4;
     private View myView;
 
 
     //only thing to do is initialize the view and set click listener for web link
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        myView = inflater.inflate(R.layout.fragment_add_business, container, false);
         context = (MainActivity) getActivity();
+        setNavbarIndex(4);
+        myView = inflater.inflate(R.layout.fragment_add_business, container, false);
         setWebpageClickListener();
         return myView;
     }

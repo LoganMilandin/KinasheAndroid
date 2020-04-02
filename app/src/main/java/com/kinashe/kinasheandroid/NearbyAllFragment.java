@@ -1,6 +1,5 @@
 package com.kinashe.kinasheandroid;
 
-import android.location.Location;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,10 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
 
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
-import com.kinashe.kinasheandroid.Utils.NavigationManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +19,7 @@ public class NearbyAllFragment extends CustomFragment {
     private MainActivity context;
 
     private static final String TAG = "AddBusinessPage";
+    private int navbarIndex;
 
     private static final int MAX_DISTANCE_FOR_NEARBY = 20;
 
@@ -75,6 +73,7 @@ public class NearbyAllFragment extends CustomFragment {
             @Override
             public void onClick(View button) {
                 CustomFragment newFragment = new NearbyAllListFragment();
+                context.navigationManager.setFragmentNavbarIndex(newFragment);
                 newFragment.setArguments(getArguments());
                 newFragment.setParent(NearbyAllFragment.this);
                 NearbyAllFragment.this.setChild(newFragment);

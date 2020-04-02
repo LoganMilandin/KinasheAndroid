@@ -31,6 +31,7 @@ public class SearchBusinessFragment extends CustomFragment {
     public MainActivity context;
 
     private static final String TAG = "SearchFragment";
+    private int navbarIndex;
     private View thisView;
     private EditText searchText;
     private RecyclerView businessDisplay;
@@ -44,6 +45,7 @@ public class SearchBusinessFragment extends CustomFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         context = (MainActivity) getActivity();
+        setNavbarIndex(1);
         thisView = inflater.inflate(R.layout.fragment_search, container, false);
         searchText = thisView.findViewById(R.id.search_text);
         setupInputListener();

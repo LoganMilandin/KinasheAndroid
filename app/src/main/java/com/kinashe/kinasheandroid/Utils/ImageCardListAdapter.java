@@ -82,6 +82,7 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
                     ImageCard selectedImage = cards.get(position);
                     int image = selectedImage.getImage();
                     Bundle categoryContainer = new Bundle();
+                    context.navigationManager.setFragmentNavbarIndex(newFragment);
                     categoryContainer.putString("title", selectedText);
                     categoryContainer.putInt("image", image);
                     newFragment.setArguments(categoryContainer);

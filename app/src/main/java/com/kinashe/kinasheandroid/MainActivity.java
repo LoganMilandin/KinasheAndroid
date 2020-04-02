@@ -94,6 +94,8 @@ public class MainActivity extends AppCompatActivity
     //manages all fragments, usually via the NavigationManager instance
     public FragmentManager manager;
 
+    private BottomNavigationViewEx bottomBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -116,22 +118,24 @@ public class MainActivity extends AppCompatActivity
         Bundle placeBundle = new Bundle();
         placeBundle.putString("title", "Places | ቦታዎች");
         placesFragment.setArguments(placeBundle);
+        placesFragment.setNavbarIndex(2);
         //make transportation fragment with title in a bundle
         transportationFragment = new PlacesOrTransportationFragment();
         Bundle transportationBundle = new Bundle();
         transportationBundle.putString("title", "Transportation | መጓጓዣ");
         transportationFragment.setArguments(transportationBundle);
+        transportationFragment.setNavbarIndex(3);
         addBusinessFragment = new AddBusinessFragment();
         //this is part of the workaround for lag when you first click the places tab
         //ultimately we want to hide all of these fragments except the homepage, but
         //if we hide them here they don't actually initialize their views before
         //getting hidden. So, we do the actual hiding after the firebase data is retrieved.
         manager.beginTransaction().
-                add(R.id.topbar_and_content, searchFragment).
-                add(R.id.topbar_and_content, placesFragment).
-                add(R.id.topbar_and_content, transportationFragment).
-                add(R.id.topbar_and_content, addBusinessFragment).
-                add(R.id.topbar_and_content, homeFragment).
+                add(R.id.topbar_and_content, searchFragment, "0").
+                add(R.id.topbar_and_content, placesFragment, "1").
+                add(R.id.topbar_and_content, transportationFragment, "2").
+                add(R.id.topbar_and_content, addBusinessFragment, "3").
+                add(R.id.topbar_and_content, homeFragment, "4").
                 show(homeFragment).
                 commit();
         activeFragment = homeFragment;
@@ -269,9 +273,9 @@ public class MainActivity extends AppCompatActivity
     private void setupBottomBar() {
         Log.d(TAG, "setupBottomBar: setting up BottomNavigationView");
         View container = findViewById(R.id.bottombar_container);
-        BottomNavigationViewEx bottomNavigationViewEx = container.findViewById(R.id.bottombar);
-        disableBottomNavigationAnimations(bottomNavigationViewEx);
-        bottomNavigationViewEx.setOnNavigationItemSelectedListener(bottombarListener);
+        bottomBar = container.findViewById(R.id.bottombar);
+        disableBottomNavigationAnimations(bottomBar);
+        bottomBar.setOnNavigationItemSelectedListener(bottombarListener);
 
     }
     //turns off default animations for bottom bar
@@ -295,4 +299,13 @@ public class MainActivity extends AppCompatActivity
                     return true;
                 }
             };
+
+    @Override
+    public void onBackPressed() {
+        navigationManager.handleBackClickedManual();
+    }
+
+    public BottomNavigationViewEx getBottomBar() {
+        return bottomBar;
+    }
 }

@@ -11,15 +11,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.kinashe.kinasheandroid.CustomFragment;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
-import com.kinashe.kinasheandroid.HomeFragment;
 import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.R;
-import com.kinashe.kinasheandroid.SearchBusinessFragment;
 import com.kinashe.kinasheandroid.SingleBusinessFragment;
 import com.squareup.picasso.Picasso;
 
@@ -150,6 +147,7 @@ public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapte
                 fragment.setChild(newFragment);
                 Log.d(TAG, "child null? " + (fragment.getChild() == null));
                 Bundle businessWrapper = new Bundle();
+                context.navigationManager.setFragmentNavbarIndex(newFragment);
                 businessWrapper.putSerializable("businessInfo", business);
                 newFragment.setArguments(businessWrapper);
                 context.navigationManager.handleNewFragmentCreated(newFragment);
