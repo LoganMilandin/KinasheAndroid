@@ -22,13 +22,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SingleBusinessFragment extends Fragment {
+public class SingleBusinessFragment extends CustomFragment {
 
     private static final String TAG = "SingleBusinessFragment";
 
-    private View thisView;
-    private MainActivity context;
+    public MainActivity context;
 
+    private View thisView;
     private TextView companyName;
     private TextView description;
     private TextView hours;
@@ -168,13 +168,7 @@ public class SingleBusinessFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View button) {
-                Log.d(TAG, "clicked back");
-                if (getArguments().getString("parent type").equals("home")) {
-                    context.navigationManager.handleBackClickedFromSingleBusinessHome();
-                } else {
-                    context.navigationManager.handleBackClickedFromSingleBusinessSearch();
-                }
-
+                context.navigationManager.handleBackClicked(SingleBusinessFragment.this);
             }
         });
         View translateButton = thisView.findViewById(R.id.translate_button);

@@ -18,7 +18,9 @@ import com.kinashe.kinasheandroid.Utils.ImageCardListAdapter;
 
 import java.util.List;
 
-public class PlacesOrTransportationFragment extends Fragment {
+public class PlacesOrTransportationFragment extends CustomFragment {
+
+    public MainActivity context;
 
     private static final String TAG = "PlacesOrTransportation";
 
@@ -33,6 +35,7 @@ public class PlacesOrTransportationFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.context = (MainActivity) getActivity();
         thisView = inflater.inflate(R.layout.fragment_places_or_transportation, container, false);
         createGridLayout();
         return thisView;
@@ -50,6 +53,7 @@ public class PlacesOrTransportationFragment extends Fragment {
         currentCards = cardHelper.getCards(titleText);
         typeGridAdapter = new ImageCardListAdapter(thisView, (MainActivity) getActivity(),
                 PlacesOrTransportationFragment.this, currentCards);
+        //change settings on this grid layout manager
         typeGrid.setLayoutManager(new GridLayoutManager(getActivity(), 2));
         typeGrid.setAdapter(typeGridAdapter);
         //also set top text while we're here

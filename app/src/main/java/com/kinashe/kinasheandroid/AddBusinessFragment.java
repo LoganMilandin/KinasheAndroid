@@ -10,19 +10,19 @@ import android.view.ViewGroup;
 import androidx.fragment.app.Fragment;
 
 
-//handles the handshake tab on the app
-public class AddBusinessFragment extends Fragment {
-    private static final String TAG = "AddBusinessPage";
-    //for navbar
-    private static final int ACTIVITY_NUM = 3;
+/**
+ * handles the 5th tab on the app, where there is no nested fragments and
+ * the only clickable content is the link to the Kinashe website
+ */
+public class AddBusinessFragment extends CustomFragment {
 
+    public MainActivity context;
+
+    private static final String TAG = "AddBusinessPage";
     private View myView;
 
-    private MainActivity context;
 
-    public AddBusinessFragment() {
-    }
-
+    //only thing to do is initialize the view and set click listener for web link
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_add_business, container, false);
@@ -41,6 +41,4 @@ public class AddBusinessFragment extends Fragment {
             }
         });
     }
-
-
 }

@@ -17,26 +17,23 @@ import com.kinashe.kinasheandroid.Utils.NavigationManager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NearbyAllFragment extends Fragment {
+public class NearbyAllFragment extends CustomFragment {
+
+    private MainActivity context;
 
     private static final String TAG = "AddBusinessPage";
-    //for navbar
+
     private static final int MAX_DISTANCE_FOR_NEARBY = 20;
 
     public List<BusinessInfo> theseBusinesses;
 
     private View myView;
 
-    private MainActivity context;
-
-    private PlacesOrTransportationFragment parent;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.fragment_nearby_all, container, false);
         context = (MainActivity) getActivity();
-        //setup view
         setupView();
         return myView;
     }
@@ -58,11 +55,7 @@ public class NearbyAllFragment extends Fragment {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View back) {
-                if (getArguments().getString("screen").equals("Places | ቦታዎች")) {
-                    context.navigationManager.handleBackButtonClickedFromNearbyAllPlaces();
-                } else {
-                    context.navigationManager.handleBackButtonClickedFromNearbyAllTransportation();
-                }
+                context.navigationManager.handleBackClicked(NearbyAllFragment.this);
             }
         });
         CardView nearbyButton = myView.findViewById(R.id.nearby_button);
@@ -70,25 +63,23 @@ public class NearbyAllFragment extends Fragment {
         allButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View button) {
-                NearbyAllListFragment newFragment = new NearbyAllListFragment();
+                CustomFragment newFragment = new NearbyAllListFragment();
                 newFragment.setArguments(getArguments());
-                newFragment.setParent(parent);
-                newFragment.setupScrollableContent(theseBusinesses);
-                if (parent == context.placesFragment) {
-                    context.navigationManager.handleNearbyAllClickedPlaces(newFragment);
-                } else {
-                    context.navigationManager.handleNearbyAllClickedTransportation(newFragment);
-                }
+                newFragment.setParent(NearbyAllFragment.this);
+                NearbyAllFragment.this.setChild(newFragment);
+                ((NearbyAllListFragment)newFragment).setupScrollableContent(theseBusinesses);
+                context.navigationManager.handleNewFragmentCreated(newFragment);
             }
         });
         nearbyButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View button) {
-                NearbyAllListFragment newFragment = new NearbyAllListFragment();
+                CustomFragment newFragment = new NearbyAllListFragment();
                 newFragment.setArguments(getArguments());
-                newFragment.setParent(parent);
+                newFragment.setParent(NearbyAllFragment.this);
+                NearbyAllFragment.this.setChild(newFragment);
                 if (context.location == null) {
-                    newFragment.setupScrollableContent(theseBusinesses);
+                    ((NearbyAllListFragment)newFragment).setupScrollableContent(theseBusinesses);
                 } else {
                     List<BusinessInfo> nearbyBusinesses = new ArrayList<>();
                     for (BusinessInfo business: theseBusinesses) {
@@ -96,19 +87,10 @@ public class NearbyAllFragment extends Fragment {
                             nearbyBusinesses.add(business);
                         }
                     }
-                    newFragment.setupScrollableContent(nearbyBusinesses);
+                    ((NearbyAllListFragment)newFragment).setupScrollableContent(nearbyBusinesses);
                 }
-                if (parent == context.placesFragment) {
-                    context.navigationManager.handleNearbyAllClickedPlaces(newFragment);
-                } else if (parent == context.transportationFragment) {
-                    context.navigationManager.handleNearbyAllClickedTransportation(newFragment);
-                }
+                context.navigationManager.handleNewFragmentCreated(newFragment);
             }
         });
     }
-
-    public void setParent(PlacesOrTransportationFragment parent) {
-        this.parent = parent;
-    }
-
 }

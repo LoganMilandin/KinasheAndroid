@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
-import com.kinashe.kinasheandroid.Utils.HomepageListAdapter;
+import com.kinashe.kinasheandroid.Utils.BusinessListAdapter;
 
 import java.util.List;
 
@@ -23,35 +23,31 @@ import java.util.List;
  * activities. For simplicity, the others aren't commented because it's the same
  * idea as this
  */
-public class HomeFragment extends Fragment {
+public class HomeFragment extends CustomFragment {
+
+    public MainActivity context;
+
     private static final String TAG = "HomeFragment";
     private View thisView;
-
-    //for navbar menu
-    private static final int ACTIVITY_NUM = 0;
 
     //handlers for scrolling view
     private RecyclerView businessDisplay;
     private RecyclerView.Adapter displayAdapter;
     private RecyclerView.LayoutManager displayManager;
 
-    //handles getting user location
-    private FusedLocationProviderClient locationProvider;
-
-    public HomeFragment() {
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         thisView = inflater.inflate(R.layout.fragment_home, container, false);
+        context = (MainActivity) getActivity();
         return thisView;
     }
 
-    public void setupScrollableContent(List<BusinessInfo> businesses, Location location) {
+    public void setupScrollableContent(List<BusinessInfo> businesses) {
         Log.d(TAG, "setting up homepage");
         businessDisplay = thisView.findViewById(R.id.business_display);
         businessDisplay.setLayoutManager(new LinearLayoutManager(getActivity()));
-        displayAdapter = new HomepageListAdapter(businesses, (MainActivity) getActivity(), this);
+        displayAdapter = new BusinessListAdapter(businesses, (MainActivity) getActivity(), this);
         businessDisplay.setAdapter(displayAdapter);
     }
 

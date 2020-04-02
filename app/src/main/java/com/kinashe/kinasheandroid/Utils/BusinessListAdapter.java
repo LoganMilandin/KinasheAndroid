@@ -1,7 +1,6 @@
 package com.kinashe.kinasheandroid.Utils;
 
 import android.content.Intent;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kinashe.kinasheandroid.CustomFragment;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.HomeFragment;
 import com.kinashe.kinasheandroid.MainActivity;
@@ -26,14 +26,14 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapter.BusinessViewHolder> {
+public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapter.BusinessViewHolder> {
 
-    private static final String TAG = "HomepageListAdapter";
+    private static final String TAG = "BusinessListAdapter";
 
     private MainActivity context;
-    private Fragment fragment;
+    public CustomFragment fragment;
 
-    private int totalBinds;
+
 
     private List<BusinessInfo> businesses;
 
@@ -60,7 +60,7 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
 
     }
 
-    public HomepageListAdapter(List<BusinessInfo> businesses, MainActivity context, Fragment fragment) {
+    public BusinessListAdapter(List<BusinessInfo> businesses, MainActivity context, CustomFragment fragment) {
         this.context = context;
         this.fragment = fragment;
         if (businesses != null) {
@@ -68,11 +68,10 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
         } else {
             this.businesses = new ArrayList<>();
         }
-        totalBinds = 0;
     }
 
     @Override
-    public HomepageListAdapter.BusinessViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public BusinessListAdapter.BusinessViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d(TAG, "constructing list adapter");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         //now, we inflate a custom layout file with the markup for an individual business
@@ -144,17 +143,16 @@ public class HomepageListAdapter extends RecyclerView.Adapter<HomepageListAdapte
         View.OnClickListener listener = new View.OnClickListener() {
             @Override
             public void onClick(View photo) {
-                Log.d(TAG, "clicked");
-                SingleBusinessFragment newFragment = new SingleBusinessFragment();
+                CustomFragment newFragment = new SingleBusinessFragment();
+                //connect fragments
+                newFragment.setParent(fragment);
+                Log.d(TAG, "child null? " + (newFragment.getParent() == null));
+                fragment.setChild(newFragment);
+                Log.d(TAG, "child null? " + (fragment.getChild() == null));
                 Bundle businessWrapper = new Bundle();
                 businessWrapper.putSerializable("businessInfo", business);
-                businessWrapper.putString("parent type", fragment instanceof HomeFragment?"home":"search");
                 newFragment.setArguments(businessWrapper);
-                if (fragment instanceof HomeFragment) {
-                    context.navigationManager.handleSingleBusinessSelectedFromHomepage(newFragment);
-                } else if (fragment instanceof SearchBusinessFragment) {
-                    context.navigationManager.handleSingleBusinessSelectedFromSearch(newFragment);
-                }
+                context.navigationManager.handleNewFragmentCreated(newFragment);
             }
         };
         holder.businessPhoto.setOnClickListener(listener);

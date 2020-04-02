@@ -17,6 +17,8 @@ public class BusinessInfo implements Serializable {
     private String phone;
     private String lat;
     private String lon;
+    //attribute not from database, used to order businesses instead once
+    //user location is calculated
     private double distance;
     private int monthlyPayment;
     private boolean verified;

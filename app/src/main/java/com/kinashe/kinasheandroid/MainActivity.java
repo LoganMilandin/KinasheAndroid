@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -37,10 +38,10 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * handles the flame activity on the app, also happens to be the
- * home/launch screen but besides that it does the same thing as the other
- * activities. For simplicity, the others aren't commented because it's the same
- * idea as this
+ * this is where all the magic happens. This activity runs the entire time the
+ * app is open and manages a group of fragments corresponding to the different
+ * screens the user can click to. Handles location services and clickables
+ * like calling and openin navigation
  */
 public class MainActivity extends AppCompatActivity
         implements ActivityCompat.OnRequestPermissionsResultCallback {
@@ -55,37 +56,42 @@ public class MainActivity extends AppCompatActivity
     public Location location;
 
     //for handling call requests
-    private Intent callIntent;
+    public Intent callIntent;
 
     //handles getting user location
-    private FusedLocationProviderClient locationProvider;
+    public FusedLocationProviderClient locationProvider;
 
-    //for firebase data
+    //stores firebase data in an ordered format
     public List<BusinessInfo> businesses;
 
-    //for navigation
+    //handles all app navigation, including back navigation,
+    //navbar clicks, and manual back navigation with back
+    //button on phone
     public NavigationManager navigationManager;
 
-    //fragments for home view
-    public HomeFragment homeFragment;
-    public SingleBusinessFragment singleBusinessFragmentHome;
+    //fragments for home tab
+    public CustomFragment homeFragment;//should be instance of HomeFragment
+    public CustomFragment singleBusinessFragmentHome;//should be instance of SingleBusinessFragment
 
-    //fragments for search view
-    public SearchBusinessFragment searchFragment;
-    public SingleBusinessFragment singleBusinessFragmentSearch;
+    //fragments for search tab
+    public CustomFragment searchFragment;//should be instance of SearchFragment
+    public CustomFragment singleBusinessFragmentSearch;//should be instance of SingleBusinessFragment
 
-    //fragments for places view
-    public PlacesOrTransportationFragment placesFragment;
-    public NearbyAllFragment nearbyAllPlacesFragment;
-    public NearbyAllListFragment nearbyAllPlacesListFragment;
+    //fragments for places tab
+    public CustomFragment placesFragment;//should be instance of PlacesOrTransportationFragment
+    public CustomFragment nearbyAllPlacesFragment;//should be instance of NearbyAllFragment
+    public CustomFragment nearbyAllPlacesListFragment;//should be instance of NearbyAllListFragment
 
-    //fragments for transportation view
-    public PlacesOrTransportationFragment transportationFragment;
-    public NearbyAllFragment nearbyAllTransportationFragment;
-    public NearbyAllListFragment nearbyAllTransportationListFragment;
+    //fragments for transportation tab
+    public CustomFragment transportationFragment;//should be instance of PlacesOrTransportationFragment
+    public CustomFragment nearbyAllTransportationFragment;//should be instance of NearbyAllFragment
+    public CustomFragment nearbyAllTransportationListFragment;//should be instance of NearbyAllListFragment
 
-    public AddBusinessFragment addBusinessFragment;
-    public Fragment activeFragment;
+    //fragment for add business tab
+    public CustomFragment addBusinessFragment;//should be instance of AddBusiness fragment
+    public CustomFragment activeFragment;
+
+    //manages all fragments, usually via the NavigationManager instance
     public FragmentManager manager;
 
     @Override
@@ -126,12 +132,13 @@ public class MainActivity extends AppCompatActivity
                 add(R.id.topbar_and_content, transportationFragment).
                 add(R.id.topbar_and_content, addBusinessFragment).
                 add(R.id.topbar_and_content, homeFragment).
+                show(homeFragment).
                 commit();
         activeFragment = homeFragment;
     }
 
-
-    private void setupHomepage() {
+    //requests permission and populates homepage depending on the result
+    private void setupHomepageInitial() {
         if (ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "location permissions allowed");
@@ -143,6 +150,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //sorts the businesses and then renders them in a list on homepage
     public void populateHomepage() {
         if (location != null) {
             for (int i = 0; i < businesses.size(); i++) {
@@ -168,10 +176,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
         //also pass input list to search screen while we're here
-        ((SearchBusinessFragment) searchFragment).setupScrollableContent(businesses, location);
-        ((HomeFragment) homeFragment).setupScrollableContent(businesses, location);
+        ((SearchBusinessFragment) searchFragment).setupScrollableContent(businesses);
+        ((HomeFragment) homeFragment).setupScrollableContent(businesses);
     }
 
+    //actually gets location and then populates homepage
     private void populateHomepageWithLocation() {
         locationProvider.getLastLocation()
                 .addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
@@ -183,12 +192,13 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
     }
-
+    //retrieves data from firebase and renders it to the homepage,
+    //also passing it to search fragment
     private void getFirebaseData() {
         Log.d(TAG, "populating homepage");
         businesses = new ArrayList<>();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-        database.addValueEventListener(
+        database.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot data) {
@@ -211,7 +221,7 @@ public class MainActivity extends AppCompatActivity
                                 hide(transportationFragment).
                                 hide(addBusinessFragment).
                                 commit();
-                        setupHomepage();
+                        setupHomepageInitial();
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -223,6 +233,7 @@ public class MainActivity extends AppCompatActivity
         );
     }
 
+    //callback when we get the result of permission requests
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         Log.d(TAG, "answer received: " + requestCode);
@@ -246,6 +257,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //sets an intent to open a new call activity so it can be called from other
     public void setCallIntent(Intent intent) {
         this.callIntent = intent;
     }
@@ -262,7 +274,7 @@ public class MainActivity extends AppCompatActivity
         bottomNavigationViewEx.setOnNavigationItemSelectedListener(bottombarListener);
 
     }
-
+    //turns off default animations for bottom bar
     public static void disableBottomNavigationAnimations(BottomNavigationViewEx bottomNavigationViewEx) {
         Log.d(TAG, "setupBottomNavigationView: Setting up BottomNavigationView");
         //to stop the icons from moving around
@@ -278,7 +290,8 @@ public class MainActivity extends AppCompatActivity
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                    return navigationManager.handleBottombarItemSelected(item.getItemId());
+                    Log.d(TAG, "home child null?" + (homeFragment.getChild() == null));
+                    return navigationManager.handleBottombarItemSelected(item);
                 }
             };
 }

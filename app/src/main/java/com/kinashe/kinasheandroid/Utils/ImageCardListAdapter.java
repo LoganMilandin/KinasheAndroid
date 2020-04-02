@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.kinashe.kinasheandroid.CustomFragment;
 import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.NearbyAllFragment;
 import com.kinashe.kinasheandroid.PlacesOrTransportationFragment;
@@ -24,7 +25,7 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
     private static final String TAG = "ImageCardListAdapter";
 
     private MainActivity context;
-    private PlacesOrTransportationFragment fragment;
+    private CustomFragment fragment;
     private View myView;
     private List<ImageCard> cards;
 
@@ -69,7 +70,7 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
                 String selectedText = (String) selectedTextView.getText();
                 TextView titleTextView = myView.findViewById(R.id.title);
                 String titleText = (String) titleTextView.getText();
-                List<ImageCard> newCards = fragment.getCardHelper().getCards(selectedText);
+                List<ImageCard> newCards = ((PlacesOrTransportationFragment)fragment).getCardHelper().getCards(selectedText);
                 if (newCards != null) {
                     cards = newCards;
                     gridItemSelectedHelper(selectedText, titleText);
@@ -77,20 +78,14 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
                 } else {
                     NearbyAllFragment newFragment = new NearbyAllFragment();
                     newFragment.setParent(fragment);
+                    fragment.setChild(newFragment);
                     ImageCard selectedImage = cards.get(position);
                     int image = selectedImage.getImage();
                     Bundle categoryContainer = new Bundle();
                     categoryContainer.putString("title", selectedText);
                     categoryContainer.putInt("image", image);
-                    if (fragment.getArguments().getString("title").equals("Places | ቦታዎች")) {
-                        categoryContainer.putString("screen", "Places | ቦታዎች");
-                        newFragment.setArguments(categoryContainer);
-                        context.navigationManager.handleLeafNodeClickedPlaces(newFragment);
-                    } else {
-                        categoryContainer.putString("screen", "Transportation | መጓጓዣ");
-                        newFragment.setArguments(categoryContainer);
-                        context.navigationManager.handleLeafNodeClickedTransportation(newFragment);
-                    }
+                    newFragment.setArguments(categoryContainer);
+                    context.navigationManager.handleNewFragmentCreated(newFragment);
                 }
             }
         });
@@ -105,7 +100,7 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
             @Override
             public void onClick(View backButton) {
                 //simply go back to the screen corresponding to currentTitle
-                cards = fragment.getCardHelper().getCards(oldTitle);
+                cards = ((PlacesOrTransportationFragment)fragment).getCardHelper().getCards(oldTitle);
                 title.setText(oldTitle);
                 if (oldTitle.equals("Places | ቦታዎች") || oldTitle.equals("Transportation | መጓጓዣ")) {
                     backButton.setVisibility(View.INVISIBLE);
