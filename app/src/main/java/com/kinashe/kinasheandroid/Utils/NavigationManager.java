@@ -21,7 +21,7 @@ public class NavigationManager {
         this.context = context;
     }
 
-    public boolean handleBottombarItemSelected(MenuItem item) {
+    public void handleBottombarItemSelected(MenuItem item) {
         CustomFragment toDisplay = null;
         FragmentTransaction transaction = context.manager.beginTransaction();
         switch (item.getItemId()) {
@@ -57,7 +57,6 @@ public class NavigationManager {
                 transaction.add(R.id.topbar_and_content, newFragment).
                         hide(context.activeFragment).show(newFragment).commit();
                 context.activeFragment = newFragment;
-                return true;
             } else {
                 //else we just display this fragment
                 if (toDisplay.getChild() != null) {
@@ -66,14 +65,12 @@ public class NavigationManager {
                 transaction.hide(context.activeFragment).show(toDisplay).commit();
                 context.activeFragment = toDisplay;
                 toDisplay.setChild(null);
-                return true;
             }
         } else while (toDisplay.getChild() != null) {
             toDisplay = toDisplay.getChild();
         }
         transaction.hide(context.activeFragment).show(toDisplay).commit();
         context.activeFragment = toDisplay;
-        return true;
     }
 
     public void handleNewFragmentCreated(CustomFragment newFragment) {

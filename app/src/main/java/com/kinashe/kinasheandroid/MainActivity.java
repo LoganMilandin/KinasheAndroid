@@ -291,7 +291,8 @@ public class MainActivity extends AppCompatActivity
                 @Override
                 public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                     Log.d(TAG, "home child null?" + (homeFragment.getChild() == null));
-                    return navigationManager.handleBottombarItemSelected(item);
+                    navigationManager.handleBottombarItemSelected(item);
+                    return true;
                 }
             };
 }
