@@ -1,8 +1,10 @@
 package com.kinashe.kinasheandroid.Utils;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -51,42 +53,57 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater mInflater = LayoutInflater.from(context);
-        View view = mInflater.inflate(R.layout.layout_card, parent, false);
+        View view = mInflater.inflate(R.layout.layout_category_card, parent, false);
         return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
         Log.d(TAG, "binding image card adapter");
         final ImageCard card = cards.get(position);
         holder.place_name.setText(card.getText());
         holder.place_img.setImageResource(card.getImage());
-        holder.image_card.setOnClickListener(new View.OnClickListener() {
+        holder.place_img.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View gridbox) {
-                Log.d(TAG, "clicked grid");
-                TextView selectedTextView = gridbox.findViewById(R.id.place);
-                String selectedText = (String) selectedTextView.getText();
-                TextView titleTextView = myView.findViewById(R.id.title);
-                String titleText = (String) titleTextView.getText();
-                List<ImageCard> newCards = ((PlacesOrTransportationFragment)fragment).getCardHelper().getCards(selectedText);
-                if (newCards != null) {
-                    cards = newCards;
-                    gridItemSelectedHelper(selectedText, titleText);
-                    notifyDataSetChanged();
-                } else {
-                    NearbyAllFragment newFragment = new NearbyAllFragment();
-                    newFragment.setParent(fragment);
-                    fragment.setChild(newFragment);
-                    ImageCard selectedImage = cards.get(position);
-                    int image = selectedImage.getImage();
-                    Bundle categoryContainer = new Bundle();
-                    context.navigationManager.setFragmentNavbarIndex(newFragment);
-                    categoryContainer.putString("title", selectedText);
-                    categoryContainer.putInt("image", image);
-                    newFragment.setArguments(categoryContainer);
-                    context.navigationManager.handleNewFragmentCreated(newFragment);
+            public boolean onTouch(View gridbox, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.d(TAG, "clicked grid");
+                    holder.place_img.setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    holder.place_img.clearColorFilter();
+                    if (event.getX() > gridbox.getLeft() && event.getX() < gridbox.getRight()
+                        && event.getY() > gridbox.getTop() && event.getY() < gridbox.getBottom()) {
+                        TextView selectedTextView = holder.image_card.findViewById(R.id.place);
+                        String selectedText = (String) selectedTextView.getText();
+                        TextView titleTextView = myView.findViewById(R.id.title);
+                        String titleText = (String) titleTextView.getText();
+                        List<ImageCard> newCards = ((PlacesOrTransportationFragment) fragment).getCardHelper().getCards(selectedText);
+                        if (newCards != null) {
+                            cards = newCards;
+                            gridItemSelectedHelper(selectedText, titleText);
+                            notifyDataSetChanged();
+                        } else {
+                            NearbyAllFragment newFragment = new NearbyAllFragment();
+                            newFragment.setParent(fragment);
+                            fragment.setChild(newFragment);
+                            ImageCard selectedImage = cards.get(position);
+                            int image = selectedImage.getImage();
+                            Bundle categoryContainer = new Bundle();
+                            context.navigationManager.setFragmentNavbarIndex(newFragment);
+                            categoryContainer.putString("title", selectedText);
+                            categoryContainer.putInt("image", image);
+                            newFragment.setArguments(categoryContainer);
+                            context.navigationManager.handleNewFragmentCreated(newFragment);
+                        }
+                        return true;
+                    }
+                } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    holder.place_img.clearColorFilter();
+                    return false;
+
                 }
+                return false;
             }
         });
     }

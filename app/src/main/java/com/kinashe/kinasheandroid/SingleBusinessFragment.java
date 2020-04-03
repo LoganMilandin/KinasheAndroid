@@ -1,12 +1,16 @@
 package com.kinashe.kinasheandroid;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -173,45 +177,104 @@ public class SingleBusinessFragment extends CustomFragment {
             }
         });
         View translateButton = thisView.findViewById(R.id.translate_button);
-        translateButton.setOnClickListener(new View.OnClickListener() {
+        translateButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View button) {
-                translateText();
+            public boolean onTouch(View button, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.d(TAG, "clicked grid");
+                    ((ImageView)button).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Log.d(TAG, "released");
+                    ((ImageView)button).clearColorFilter();
+                    if (event.getX() > 0 && event.getY() < button.getBottom()) {
+                        translateText();
+                    }
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    ((ImageView)button).clearColorFilter();
+                    return false;
+
+                }
+                return false;
             }
         });
         View navLogo = thisView.findViewById(R.id.directions);
         View phoneLogo = thisView.findViewById(R.id.phone);
         View searchLogo = thisView.findViewById(R.id.website);
-        navLogo.setOnClickListener(new View.OnClickListener() {
+        navLogo.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View navLogo) {
-                Intent directionsIntent = new Intent(Intent.ACTION_VIEW,
-                        Uri.parse("google.navigation:q=" + myInfo.getLat() + "," + myInfo.getLon()));
-                context.startActivity(directionsIntent);
+            public boolean onTouch(View nav, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.d(TAG, "clicked grid");
+                    ((ImageView)nav).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Log.d(TAG, "released");
+                    ((ImageView)nav).clearColorFilter();
+                    Intent directionsIntent = new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("google.navigation:q=" + myInfo.getLat() + "," + myInfo.getLon()));
+                    context.startActivity(directionsIntent);
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    ((ImageView)nav).clearColorFilter();
+                    return false;
+
+                }
+                return false;
             }
         });
         //listen for click to open phone
-        phoneLogo.setOnClickListener(new View.OnClickListener() {
+        phoneLogo.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void onClick(View phoneIcon) {
-                Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
-                phoneCallIntent.setData(Uri.parse("tel:" + myInfo.getPhone()));
-                Log.d(TAG, "starting phone dial function");
-                PermissionUtils.makePhoneCall(context, phoneCallIntent, MainActivity.CALL_REQUEST_CODE);
+            public boolean onTouch(View phone, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    Log.d(TAG, "clicked grid");
+                    ((ImageView)phone).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Log.d(TAG, "released");
+                    ((ImageView)phone).clearColorFilter();
+                    Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
+                    phoneCallIntent.setData(Uri.parse("tel:" + myInfo.getPhone()));
+                    PermissionUtils.makePhoneCall(context, phoneCallIntent, MainActivity.CALL_REQUEST_CODE);
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    ((ImageView)phone).clearColorFilter();
+                    return false;
+
+                }
+                return false;
             }
         });
         //again we expect an empty string here but it never hurts to be safe
         if (myInfo.getWebsite() == null || myInfo.getWebsite().equals("")) {
             searchLogo.setVisibility(View.INVISIBLE);
         } else {
-            //listen for click to open website
-            searchLogo.setOnClickListener(new View.OnClickListener() {
+            searchLogo.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View websiteIcon) {
-                    String website = myInfo.getWebsite();
-                    Log.d(TAG, website);
-                    Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://www.google.com"));
-                    context.startActivity(browserIntent);
+                public boolean onTouch(View web, MotionEvent event) {
+                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                        Log.d(TAG, "clicked grid");
+                        ((ImageView) web).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+                        return true;
+                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                        Log.d(TAG, "released");
+                        ((ImageView) web).clearColorFilter();
+                        String website = myInfo.getWebsite().toLowerCase();
+                        Intent browserIntent;
+                        if (website.contains("http")) {
+                            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+                        } else {
+                            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + website));
+                        }
+                        context.startActivity(browserIntent);
+                        return true;
+                    } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                        ((ImageView) web).clearColorFilter();
+                        return false;
+                    }
+                    return false;
                 }
             });
         }

@@ -33,7 +33,9 @@
         android:layout_marginRight="25dp"
         android:layout_marginTop="25dp"
         app:cardCornerRadius="8dp"
-        app:cardBackgroundColor="@color/couponBrown">
+        app:cardBackgroundColor="@color/couponBrown"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/nearby_container"
@@ -73,7 +75,9 @@
         android:layout_marginRight="25dp"
         android:layout_marginTop="25dp"
         app:cardCornerRadius="8dp"
-        app:cardBackgroundColor="@color/couponBrown">
+        app:cardBackgroundColor="@color/couponBrown"
+        android:foreground="?android:attr/selectableItemBackground"
+        android:clickable="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/all_Container"

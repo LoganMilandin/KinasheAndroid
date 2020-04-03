@@ -149,6 +149,7 @@ public class NavigationManager {
                 }
             }
         } else {
+            Log.d(TAG, "closing app");
             context.finish();
         }
     }
