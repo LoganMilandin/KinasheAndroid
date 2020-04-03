@@ -1,6 +1,4 @@
-package com.kinashe.kinasheandroid;
-
-import android.util.Log;
+package com.kinashe.kinasheandroid.Utils;
 
 import androidx.fragment.app.Fragment;
 

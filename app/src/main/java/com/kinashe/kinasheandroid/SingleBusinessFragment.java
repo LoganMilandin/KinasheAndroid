@@ -10,11 +10,11 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.Firebase.Coupon;
+import com.kinashe.kinasheandroid.Utils.CustomFragment;
 import com.kinashe.kinasheandroid.Utils.ImageGalleryPagerAdapter;
 import com.kinashe.kinasheandroid.Utils.PermissionUtils;
 

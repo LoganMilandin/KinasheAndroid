@@ -7,19 +7,10 @@ import android.view.MenuItem;
 
 import androidx.fragment.app.FragmentTransaction;
 
-import com.kinashe.kinasheandroid.AddBusinessFragment;
-import com.kinashe.kinasheandroid.CustomFragment;
-import com.kinashe.kinasheandroid.HomeFragment;
 import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.PlacesOrTransportationFragment;
 import com.kinashe.kinasheandroid.R;
-import com.kinashe.kinasheandroid.SearchBusinessFragment;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Stack;
 
 public class NavigationManager {
 

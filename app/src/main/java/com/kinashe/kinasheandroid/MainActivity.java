@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -15,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -29,6 +27,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
+import com.kinashe.kinasheandroid.Utils.CustomFragment;
 import com.kinashe.kinasheandroid.Utils.NavigationManager;
 import com.kinashe.kinasheandroid.Utils.PermissionUtils;
 
@@ -156,6 +155,7 @@ public class MainActivity extends AppCompatActivity
 
     //sorts the businesses and then renders them in a list on homepage
     public void populateHomepage() {
+        Log.d(TAG, "populating homepage");
         if (location != null) {
             for (int i = 0; i < businesses.size(); i++) {
                 Location targetLocation = new Location("");
@@ -179,9 +179,9 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         });
-        //also pass input list to search screen while we're here
-        ((SearchBusinessFragment) searchFragment).setupScrollableContent(businesses);
         ((HomeFragment) homeFragment).setupScrollableContent(businesses);
+        //also pass input list to search screen while we're here
+        ((SearchBusinessFragment) searchFragment).setupScrollableContent(new ArrayList<>(businesses));
     }
 
     //actually gets location and then populates homepage

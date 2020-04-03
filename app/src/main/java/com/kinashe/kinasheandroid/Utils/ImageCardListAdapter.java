@@ -12,7 +12,6 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.kinashe.kinasheandroid.CustomFragment;
 import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.NearbyAllFragment;
 import com.kinashe.kinasheandroid.PlacesOrTransportationFragment;

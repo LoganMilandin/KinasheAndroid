@@ -2,6 +2,7 @@ package com.kinashe.kinasheandroid;
 
 import android.location.Location;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -10,14 +11,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.Utils.BusinessListAdapter;
+import com.kinashe.kinasheandroid.Utils.CustomFragment;
 
+import java.text.CollationElementIterator;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -32,6 +42,7 @@ public class SearchBusinessFragment extends CustomFragment {
 
     private static final String TAG = "SearchFragment";
     private int navbarIndex;
+    private boolean hasTyped;
     private View thisView;
     private EditText searchText;
     private RecyclerView businessDisplay;
@@ -49,12 +60,14 @@ public class SearchBusinessFragment extends CustomFragment {
         thisView = inflater.inflate(R.layout.fragment_search, container, false);
         searchText = thisView.findViewById(R.id.search_text);
         setupInputListener();
+        setupRefresher();
         return thisView;
     }
 
     public void setupScrollableContent(List<BusinessInfo> businesses) {
+        Collections.shuffle(businesses);
         this.allBusinesses = businesses;
-        this.searchedBusinesses = new ArrayList<>();
+        this.searchedBusinesses = businesses;
         Log.d(TAG, "setting up homepage");
         businessDisplay = thisView.findViewById(R.id.business_display);
         businessDisplay.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -71,10 +84,11 @@ public class SearchBusinessFragment extends CustomFragment {
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String textEntered = s.toString().toLowerCase();
                 if (count == 0) {
-                    //make searchedBusinesses empty
-                    searchedBusinesses = new ArrayList<>();
+                    hasTyped = false;
+                    searchedBusinesses = allBusinesses;
                     displayAdapter.changeList(searchedBusinesses);
                 } else {
+                    hasTyped = true;
                     searchedBusinesses = searchResults(textEntered);
                     displayAdapter.changeList(searchedBusinesses);
                 }
@@ -93,6 +107,68 @@ public class SearchBusinessFragment extends CustomFragment {
             }
         }
         return results;
+    }
+
+    private void setupRefresher() {
+        final SwipeRefreshLayout refresher = thisView.findViewById(R.id.refresher);
+        refresher.setProgressBackgroundColorSchemeResource(R.color.searchBlue);
+        refresher.setColorSchemeResources(R.color.couponBrown);
+        refresher.setSize(SwipeRefreshLayout.LARGE);
+        refresher.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                refresher.setRefreshing(true);
+                Log.d(TAG, "refreshing");
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (!hasTyped) {
+                            allBusinesses = new ArrayList<>();
+                            DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+                            database.addListenerForSingleValueEvent(
+                                    new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot data) {
+                                            for (DataSnapshot businessType : data.getChildren()) {
+                                                if (!businessType.getKey().equals("Advertisements")) {
+                                                    for (DataSnapshot business : businessType.getChildren()) {
+                                                        BusinessInfo businessObj = business.getValue(BusinessInfo.class);
+                                                        if (businessObj.isVerified()) {
+                                                            allBusinesses.add(business.getValue(BusinessInfo.class));
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                            if (context.location != null) {
+                                                for (int i = 0; i < allBusinesses.size(); i++) {
+                                                    Location targetLocation = new Location("");
+                                                    targetLocation.setLatitude(Double.parseDouble(allBusinesses.get(i).getLat()));
+                                                    targetLocation.setLongitude(Double.parseDouble(allBusinesses.get(i).getLon()));
+                                                    //calculation and rounding done all at once
+                                                    allBusinesses.get(i).setDistance((int) (context.location.distanceTo(targetLocation) / 10.0) / 100.0);
+                                                }
+                                            }
+                                            Collections.shuffle(allBusinesses);
+                                            displayAdapter.changeList(allBusinesses);
+                                            refresher.setRefreshing(false);
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+                                            // Getting Post failed, log a message
+                                            Log.d(TAG, "loadPost:onCancelled", databaseError.toException());
+                                            refresher.setRefreshing(false);
+                                            // ...
+                                        }
+                                    }
+                            );
+                        } else {
+                            refresher.setRefreshing((false));
+                        }
+                    }
+                }, 1000);
+            }
+        });
     }
 
 

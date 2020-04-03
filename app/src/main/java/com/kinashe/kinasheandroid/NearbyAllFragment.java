@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.cardview.widget.CardView;
 
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
+import com.kinashe.kinasheandroid.Utils.CustomFragment;
 
 import java.util.ArrayList;
 import java.util.List;
