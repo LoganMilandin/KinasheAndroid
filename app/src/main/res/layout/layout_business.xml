@@ -18,7 +18,7 @@
         android:textSize="20sp"
         android:paddingTop="7dp"
         android:paddingLeft="4dp"
-        android:textColor="@color/iconWhite"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/businessPhoto"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -28,7 +28,7 @@
         android:textSize="13sp"
         android:paddingTop="15dp"
         android:paddingLeft="4dp"
-        android:textColor="@color/iconWhite"
+        android:textColor="@color/white"
         app:layout_constraintTop_toBottomOf="@id/companyName"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
@@ -38,7 +38,7 @@
         android:textSize="13sp"
         android:paddingLeft="4dp"
         android:paddingTop="15dp"
-        android:textColor="@color/iconWhite"
+        android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toBottomOf="@id/businessType"
         android:layout_width="200dp"

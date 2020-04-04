@@ -31,7 +31,7 @@
             android:paddingLeft="48dp"
             android:paddingRight="100dp"
             android:text="jkjhjhkjhjhgsadfjgsadfjgsadhfgasgf"
-            android:textColor="@color/iconWhite"
+            android:textColor="@color/white"
             android:textSize="10sp" />
 
         <TextView
@@ -43,7 +43,7 @@
             android:paddingLeft="48dp"
             android:paddingRight="95dp"
             android:text="jkjhjhkjhjhgsadfjgsadfjgsadhfgasassgf"
-            android:textColor="@color/iconWhite"
+            android:textColor="@color/white"
             android:textSize="10sp" />
 
         <TextView
@@ -55,7 +55,7 @@
             android:paddingLeft="48dp"
             android:paddingRight="95dp"
             android:text="jkjhjhkjhjhgsadfjgsadfjgsadhfgasgf"
-            android:textColor="@color/iconWhite"
+            android:textColor="@color/white"
             android:textSize="10sp" />
 
         <TextView
@@ -67,7 +67,7 @@
             android:paddingLeft="48dp"
             android:paddingRight="95dp"
             android:text="jkjhjhkjhjhgsadfjgsadfjgsassadhfgasgf"
-            android:textColor="@color/iconWhite"
+            android:textColor="@color/white"
             android:textSize="10sp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

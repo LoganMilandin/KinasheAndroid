@@ -2,7 +2,8 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/image_card"
-    android:layout_width="192dp"
+    android:layout_width="wrap_content"
+    android:layout_columnWeight="1"
     android:layout_height="105dp"
     android:layout_margin="4dp"
     app:cardCornerRadius="4dp">
@@ -12,17 +13,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scaleType="centerCrop">
-
     </ImageView>
     <TextView
         android:id="@+id/place"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="Text"
-        android:textColor="@color/iconWhite"
+        android:textColor="@color/white"
         android:gravity="bottom|center"
         android:paddingVertical="8dp"
-        android:textSize="17dp">
+        android:textSize="17dp"
+        android:shadowColor="@color/black"
+        android:shadowDx="-2"
+        android:shadowDy="-2"
+        android:shadowRadius="2" >
 
     </TextView>
 

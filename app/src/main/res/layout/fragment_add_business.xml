@@ -42,7 +42,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:text="Thank you for using Kinashe!"
-            android:textColor="@color/iconWhite"
+            android:textColor="@color/white"
             android:textSize="20dp"
             android:includeFontPadding="false" />
 
@@ -54,7 +54,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:text="ቅናሽ ስለተጠቀሙ እናመሰግናለን!"
-            android:textColor="@color/iconWhite"
+            android:textColor="@color/white"
             android:textSize="20dp"
             android:includeFontPadding="false" />
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -76,7 +76,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:text="Add your business here!"
-            android:textColor="@color/iconWhite"
+            android:textColor="@color/white"
             android:textSize="20dp"
             android:includeFontPadding="false" />
 
@@ -88,7 +88,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:text="ንግድዎን እዚህ ያክሉ!"
-            android:textColor="@color/iconWhite"
+            android:textColor="@color/white"
             android:textSize="20dp"
             android:includeFontPadding="false" />
 
@@ -100,7 +100,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             android:text="kinashe.com"
-            android:textColor="@color/iconWhite"
+            android:textColor="@color/white"
             android:textSize="20dp"
             android:includeFontPadding="false" />
 

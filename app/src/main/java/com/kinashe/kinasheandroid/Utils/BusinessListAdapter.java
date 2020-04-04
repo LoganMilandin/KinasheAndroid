@@ -151,6 +151,7 @@ public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapte
         if (business.getWebsite() == null || business.getWebsite().equals("")) {
             holder.searchLogo.setVisibility(View.INVISIBLE);
         } else {
+            holder.searchLogo.setVisibility(View.VISIBLE);
             holder.searchLogo.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View web, MotionEvent event) {

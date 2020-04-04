@@ -22,6 +22,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
+import com.kinashe.kinasheandroid.Firebase.NotificationAdHelper;
 import com.kinashe.kinasheandroid.Utils.CustomFragment;
 import com.kinashe.kinasheandroid.Utils.NavigationManager;
 import com.kinashe.kinasheandroid.Utils.PermissionUtils;
@@ -107,6 +109,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Log.d(TAG, "Internet? " + hasInternet());
         if (hasInternet()) {
+            //NotificationAdHelper.getAppId();
             locationProvider = LocationServices.getFusedLocationProviderClient(this);
             navigationManager = new NavigationManager(MainActivity.this);
             initializeFragments();
@@ -228,6 +231,23 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "populating homepage");
         businesses = new ArrayList<>();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
+
+
+        DatabaseReference child = database.child("test");
+        child.setValue("hello world").addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid) {
+                Log.d(TAG, "successful write!");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, e.getMessage());
+            }
+        });
+
+
+
         database.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override

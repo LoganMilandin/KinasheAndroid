@@ -43,7 +43,7 @@
                     android:maxLines="1"
                     android:imeOptions="actionDone"
                     android:inputType="text|textNoSuggestions"
-                    android:textColor="@color/iconWhite"
+                    android:textColor="@color/white"
                     android:background="@color/transparent"
                     android:hint="Search | ይፈልጉ"/>
             </androidx.constraintlayout.widget.ConstraintLayout>

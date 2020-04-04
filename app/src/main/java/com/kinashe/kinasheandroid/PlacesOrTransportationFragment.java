@@ -54,7 +54,8 @@ public class PlacesOrTransportationFragment extends CustomFragment {
         typeGridAdapter = new ImageCardListAdapter(thisView, (MainActivity) getActivity(),
                 PlacesOrTransportationFragment.this, currentCards);
         //change settings on this grid layout manager
-        typeGrid.setLayoutManager(new GridLayoutManager(getActivity(), 2));
+        GridLayoutManager manager = new GridLayoutManager(getActivity(), 2);
+        typeGrid.setLayoutManager(manager);
         typeGrid.setAdapter(typeGridAdapter);
         //also set top text while we're here
         TextView title = thisView.findViewById(R.id.title);
