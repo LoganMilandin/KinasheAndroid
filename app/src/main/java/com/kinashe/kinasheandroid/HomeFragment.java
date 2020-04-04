@@ -120,6 +120,7 @@ public class HomeFragment extends CustomFragment {
                                                 }
                                             }
                                         });
+                                        Log.d(TAG, "changing list");
                                         ((BusinessListAdapter) displayAdapter).changeList(businesses);
                                         refresher.setRefreshing(false);
                                     }

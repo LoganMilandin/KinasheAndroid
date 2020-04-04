@@ -4,7 +4,11 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.Network;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,6 +35,8 @@ import com.kinashe.kinasheandroid.Utils.CustomFragment;
 import com.kinashe.kinasheandroid.Utils.NavigationManager;
 import com.kinashe.kinasheandroid.Utils.PermissionUtils;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -99,12 +105,32 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        locationProvider = LocationServices.getFusedLocationProviderClient(this);
-        navigationManager = new NavigationManager(MainActivity.this);
-        //make the homepage and fill with firebase data
-        initializeFragments();
-        //make sure everything else is loaded before setting up navbar
-        setupBottomBar();
+        Log.d(TAG, "Internet? " + hasInternet());
+        if (hasInternet()) {
+            locationProvider = LocationServices.getFusedLocationProviderClient(this);
+            navigationManager = new NavigationManager(MainActivity.this);
+            initializeFragments();
+            setupBottomBar();
+        } else {
+            Toast.makeText(this, "You must have internet connection to use Kinashe. The app will now close.",
+                    Toast.LENGTH_LONG).show();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    MainActivity.this.finish();
+                }
+            }, 2000);
+        }
+    }
+
+    public boolean hasInternet() {
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        if (activeNetwork != null) {
+            return activeNetwork.getType() == ConnectivityManager.TYPE_WIFI ||
+                activeNetwork.getType() == ConnectivityManager.TYPE_MOBILE;
+        }
+        return false;
     }
 
     private void initializeFragments() {

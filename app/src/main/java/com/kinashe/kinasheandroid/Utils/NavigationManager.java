@@ -11,6 +11,8 @@ import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.PlacesOrTransportationFragment;
 import com.kinashe.kinasheandroid.R;
 
+import java.util.LinkedList;
+
 
 public class NavigationManager {
 
@@ -169,6 +171,19 @@ public class NavigationManager {
             if (menu.getItem(i).isChecked()) {
                 newFragment.setNavbarIndex(i);
             }
+        }
+    }
+
+    private class CustomFragStack<E> extends LinkedList<E> {
+        public E pop() {
+            return remove(size() - 1);
+        }
+
+        public void push(E item) {
+            add(item);
+        }
+        public E peek() {
+            return get(size() - 1);
         }
     }
 }
