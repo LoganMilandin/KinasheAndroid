@@ -69,4 +69,6 @@ public class PlacesOrTransportationFragment extends CustomFragment {
         return cardHelper;
     }
 
+    public ImageCardListAdapter getTypeGridAdapter() { return typeGridAdapter; }
+
 }

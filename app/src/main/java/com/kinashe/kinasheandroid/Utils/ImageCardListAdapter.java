@@ -27,8 +27,15 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
 
     private MainActivity context;
     private CustomFragment fragment;
+
     private View myView;
+    private TextView title;
+    private ImageView backButton;
+
     private List<ImageCard> cards;
+
+    private String currentTitle;
+    private String previousTitle;
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView place_name;
@@ -47,6 +54,8 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
         this.context = context;
         this.fragment = fragment;
         this.myView = myView;
+        this.title = myView.findViewById(R.id.title);
+        this.backButton = myView.findViewById(R.id.back_button);
         this.cards = cards;
     }
     @NonNull
@@ -75,13 +84,14 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
                     if (event.getX() > gridbox.getLeft() && event.getX() < gridbox.getRight()
                         && event.getY() > gridbox.getTop() && event.getY() < gridbox.getBottom()) {
                         TextView selectedTextView = holder.image_card.findViewById(R.id.place);
-                        String selectedText = (String) selectedTextView.getText();
+                        String newTitle = (String) selectedTextView.getText();
                         TextView titleTextView = myView.findViewById(R.id.title);
-                        String titleText = (String) titleTextView.getText();
-                        List<ImageCard> newCards = ((PlacesOrTransportationFragment) fragment).getCardHelper().getCards(selectedText);
+                        String oldTitle = (String) titleTextView.getText();
+                        List<ImageCard> newCards = ((PlacesOrTransportationFragment) fragment).getCardHelper().getCards(newTitle);
                         if (newCards != null) {
                             cards = newCards;
-                            gridItemSelectedHelper(selectedText, titleText);
+                            ImageCardListAdapter.this.previousTitle = oldTitle;
+                            gridItemSelectedHelper(newTitle);
                             notifyDataSetChanged();
                         } else {
                             NearbyAllFragment newFragment = new NearbyAllFragment();
@@ -91,7 +101,7 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
                             int image = selectedImage.getImage();
                             Bundle categoryContainer = new Bundle();
                             context.navigationManager.setFragmentNavbarIndex(newFragment);
-                            categoryContainer.putString("title", selectedText);
+                            categoryContainer.putString("title", newTitle);
                             categoryContainer.putInt("image", image);
                             newFragment.setArguments(categoryContainer);
                             context.navigationManager.handleNewFragmentCreated(newFragment);
@@ -108,28 +118,40 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
         });
     }
 
-    private void gridItemSelectedHelper(String newTitle, final String oldTitle) {
-        final TextView title = myView.findViewById(R.id.title);
+    private void gridItemSelectedHelper(String newTitle) {
         title.setText(newTitle);
-        ImageView backButton = myView.findViewById(R.id.back_button);
         backButton.setVisibility(View.VISIBLE);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View backButton) {
-                //simply go back to the screen corresponding to currentTitle
-                cards = ((PlacesOrTransportationFragment)fragment).getCardHelper().getCards(oldTitle);
-                title.setText(oldTitle);
-                if (oldTitle.equals("Places | ቦታዎች") || oldTitle.equals("Transportation | መጓጓዣ")) {
-                    backButton.setVisibility(View.INVISIBLE);
-                }
-                notifyDataSetChanged();
+                //simply go back to the screen corresponding to previousTitle
+                goBack();
             }
         });
+    }
+
+    public void goBack() {
+        //if (previousTitle != null) {
+        cards = ((PlacesOrTransportationFragment)fragment).getCardHelper().getCards(previousTitle);
+        title.setText(previousTitle);
+        if (previousTitle.equals("Places | ቦታዎች") || previousTitle.equals("Transportation | መጓጓዣ")) {
+            backButton.setVisibility(View.INVISIBLE);
+        }
+        notifyDataSetChanged();
+        previousTitle = null;
+    }
+
+    public String getPreviousTitle() {
+        return previousTitle;
     }
 
     @Override
     public int getItemCount() {
         return cards.size();
     }
+
+
+
+
 
 }

@@ -7,6 +7,7 @@ import android.view.MenuItem;
 
 import androidx.fragment.app.FragmentTransaction;
 
+import com.kinashe.kinasheandroid.Firebase.NotificationAdHelper;
 import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.PlacesOrTransportationFragment;
 import com.kinashe.kinasheandroid.R;
@@ -91,9 +92,6 @@ public class NavigationManager {
         }
         transaction.hide(context.activeFragment).show(toDisplay).commit();
         backStack.push(context.activeFragment);
-        if (backStack.size() > MAX_BACKSTACK_SIZE) {
-            backStack.remove();
-        }
         context.activeFragment = toDisplay;
     }
 
@@ -105,9 +103,8 @@ public class NavigationManager {
         transaction.commit();
         context.activeFragment = newFragment;
         backStack.push(newFragment.getParent());
-        if (backStack.size() > MAX_BACKSTACK_SIZE) {
-            backStack.remove();
-        }
+        NotificationAdHelper.showAd(context);
+
     }
 
     public void handleBackClicked(CustomFragment oldFragment) {
@@ -123,7 +120,10 @@ public class NavigationManager {
     }
 
     public void handleBackClickedManual() {
-        if (!backStack.isEmpty()) {
+        if ((context.activeFragment == context.placesFragment || context.activeFragment == context.transportationFragment)
+                && ((PlacesOrTransportationFragment) context.activeFragment).getTypeGridAdapter().getPreviousTitle() != null) {
+            ((PlacesOrTransportationFragment) context.activeFragment).getTypeGridAdapter().goBack();
+        } else if (!backStack.isEmpty()) {
             CustomFragment previous = backStack.peek();
             if (previous == context.activeFragment.getParent()) {
                 handleBackClicked(context.activeFragment);
@@ -181,6 +181,9 @@ public class NavigationManager {
 
         public void push(E item) {
             add(item);
+            if (size() > MAX_BACKSTACK_SIZE) {
+                remove();
+            }
         }
         public E peek() {
             return get(size() - 1);

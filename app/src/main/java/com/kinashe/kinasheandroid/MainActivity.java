@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -34,6 +35,7 @@ import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.Firebase.NotificationAdHelper;
 import com.kinashe.kinasheandroid.Utils.CustomFragment;
+import com.kinashe.kinasheandroid.Utils.ImageCardListAdapter;
 import com.kinashe.kinasheandroid.Utils.NavigationManager;
 import com.kinashe.kinasheandroid.Utils.PermissionUtils;
 
@@ -60,14 +62,14 @@ public class MainActivity extends AppCompatActivity
     //for phone permissions
     public static final int CALL_REQUEST_CODE = 2;
 
-    public Location location;
-
     //for handling call requests
     public Intent callIntent;
-
     //handles getting user location
     public FusedLocationProviderClient locationProvider;
+    public Location location;
 
+    //handles Ad
+    public InterstitialAd ad;
     //stores firebase data in an ordered format
     public List<BusinessInfo> businesses;
 
@@ -109,7 +111,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Log.d(TAG, "Internet? " + hasInternet());
         if (hasInternet()) {
-            //NotificationAdHelper.getAppId();
+            NotificationAdHelper.initializeAd(this);
             locationProvider = LocationServices.getFusedLocationProviderClient(this);
             navigationManager = new NavigationManager(MainActivity.this);
             initializeFragments();
@@ -231,23 +233,6 @@ public class MainActivity extends AppCompatActivity
         Log.d(TAG, "populating homepage");
         businesses = new ArrayList<>();
         DatabaseReference database = FirebaseDatabase.getInstance().getReference();
-
-
-        DatabaseReference child = database.child("test");
-        child.setValue("hello world").addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.d(TAG, "successful write!");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.d(TAG, e.getMessage());
-            }
-        });
-
-
-
         database.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
