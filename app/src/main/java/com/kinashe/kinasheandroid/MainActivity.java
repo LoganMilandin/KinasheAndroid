@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Log.d(TAG, "Internet? " + hasInternet());
         if (hasInternet()) {
-            NotificationAdHelper.initializeAd(this);
+            //NotificationAdHelper.initializeAd(this);
             locationProvider = LocationServices.getFusedLocationProviderClient(this);
             navigationManager = new NavigationManager(MainActivity.this);
             initializeFragments();
@@ -302,11 +302,19 @@ public class MainActivity extends AppCompatActivity
         if (requestCode == LOCATION_REQUEST_CODE) {
             if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 //populate homepage with distances
-                Log.d(TAG, "location permission granted");
-                populateHomepageWithLocation();
+                Log.d(TAG, "active fragment: " + (activeFragment instanceof NearbyAllFragment));
+                if (activeFragment instanceof NearbyAllFragment) {
+                    ((NearbyAllFragment)activeFragment).getLocation();
+                } else {
+                    populateHomepageWithLocation();
+                }
             } else {
                 Log.d(TAG, "location permission not granted");
-                populateHomepage();
+                if (activeFragment instanceof NearbyAllFragment) {
+                    ((NearbyAllFragment)activeFragment).setupHelper(null);
+                } else {
+                    populateHomepage();
+                }
             }
         } else if (requestCode == CALL_REQUEST_CODE) {
             if (PermissionUtils.isPermissionGranted(permissions, grantResults, Manifest.permission.CALL_PHONE)) {

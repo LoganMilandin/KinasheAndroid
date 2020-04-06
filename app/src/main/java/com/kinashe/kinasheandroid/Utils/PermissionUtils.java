@@ -22,6 +22,7 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -29,8 +30,13 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
+import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.MainActivity;
+import com.kinashe.kinasheandroid.NearbyAllFragment;
+import com.kinashe.kinasheandroid.NearbyAllListFragment;
 import com.kinashe.kinasheandroid.R;
+
+import java.util.List;
 
 /**
  * got this from Google and only needed to use a small part of it
@@ -65,6 +71,16 @@ public abstract class PermissionUtils {
             ActivityCompat.requestPermissions(context, new String[]{Manifest.permission.CALL_PHONE}, requestId);
         } else {
             context.startActivity(intent);
+        }
+    }
+
+    public static void setDistances(List<BusinessInfo> businesses, Location location) {
+        for (int i = 0; i < businesses.size(); i++) {
+            Location targetLocation = new Location("");
+            targetLocation.setLatitude(Double.parseDouble(businesses.get(i).getLat()));
+            targetLocation.setLongitude(Double.parseDouble(businesses.get(i).getLon()));
+            double distance = (int) (location.distanceTo(targetLocation) / 10.0) / 100.0;
+            businesses.get(i).setDistance(distance);
         }
     }
 }

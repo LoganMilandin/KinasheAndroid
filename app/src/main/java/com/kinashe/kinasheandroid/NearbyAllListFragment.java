@@ -22,6 +22,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.Utils.BusinessListAdapter;
 import com.kinashe.kinasheandroid.Utils.CustomFragment;
+import com.kinashe.kinasheandroid.Utils.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,7 +77,7 @@ public class NearbyAllListFragment extends CustomFragment {
     }
 
     public void setupScrollableContent(List<BusinessInfo> businesses) {
-        this.theseBusinesses = businesses;
+        theseBusinesses = businesses;
     }
 
     /**
@@ -116,14 +117,10 @@ public class NearbyAllListFragment extends CustomFragment {
                                             }
                                         }
                                         if (context.location != null) {
+                                            PermissionUtils.setDistances(theseBusinesses, context.location);
                                             for (int i = 0; i < theseBusinesses.size(); i++) {
-                                                Location targetLocation = new Location("");
-                                                targetLocation.setLatitude(Double.parseDouble(theseBusinesses.get(i).getLat()));
-                                                targetLocation.setLongitude(Double.parseDouble(theseBusinesses.get(i).getLon()));
-                                                double distance = (int) (context.location.distanceTo(targetLocation) / 10.0) / 100.0;
-                                                theseBusinesses.get(i).setDistance(distance);
                                                 if (NearbyAllListFragment.this.isNearby &&
-                                                        distance > NearbyAllFragment.MAX_DISTANCE_FOR_NEARBY) {
+                                                        theseBusinesses.get(i).getDistance() > NearbyAllFragment.MAX_DISTANCE_FOR_NEARBY) {
                                                     theseBusinesses.remove(i--);
                                                 }
                                             }
@@ -131,11 +128,7 @@ public class NearbyAllListFragment extends CustomFragment {
                                         Collections.sort(theseBusinesses, new Comparator<BusinessInfo>() {
                                             @Override
                                             public int compare(BusinessInfo first, BusinessInfo second) {
-                                                if (first.getMonthlyPayment() > second.getMonthlyPayment()) {
-                                                    return -1;
-                                                } else if (second.getMonthlyPayment() > first.getMonthlyPayment()) {
-                                                    return 1;
-                                                } else if (context.location != null){
+                                                if (context.location != null){
                                                     return (int) (first.getDistance() - second.getDistance());
                                                 } else {
                                                     return 0;

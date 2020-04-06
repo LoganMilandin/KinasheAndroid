@@ -1,16 +1,26 @@
 package com.kinashe.kinasheandroid;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.Utils.CustomFragment;
+import com.kinashe.kinasheandroid.Utils.PermissionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,10 +48,37 @@ public class NearbyAllFragment extends CustomFragment {
         return myView;
     }
 
+
+
     /**
      * sets image display and click listeners
      */
     private void setupView() {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "location permissions allowed");
+            setupHelper(context.location);
+        } else {
+            Log.d(TAG, "requesting location permissions");
+            ActivityCompat.requestPermissions(context,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MainActivity.LOCATION_REQUEST_CODE);
+        }
+    }
+
+    public void getLocation() {
+        context.locationProvider.getLastLocation()
+                .addOnSuccessListener(context, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        // Got last known location. In some rare situations this can be null.
+                        context.location = location;
+                        setupHelper(location);
+                    }
+                });
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    public void setupHelper(final Location location) {
         String category = getArguments().getString("title");
         theseBusinesses = new ArrayList<>();
         for (BusinessInfo business: context.businesses) {
@@ -75,17 +112,16 @@ public class NearbyAllFragment extends CustomFragment {
                 context.navigationManager.handleNewFragmentCreated(newFragment);
             }
         });
-        nearbyButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View button) {
-                CustomFragment newFragment = new NearbyAllListFragment();
-                ((NearbyAllListFragment)newFragment).setNearby(true);
-                newFragment.setArguments(getArguments());
-                newFragment.setParent(NearbyAllFragment.this);
-                NearbyAllFragment.this.setChild(newFragment);
-                if (context.location == null) {
-                    ((NearbyAllListFragment)newFragment).setupScrollableContent(theseBusinesses);
-                } else {
+        if (location != null) {
+            nearbyButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View button) {
+                    CustomFragment newFragment = new NearbyAllListFragment();
+                    ((NearbyAllListFragment)newFragment).setNearby(true);
+                    newFragment.setArguments(getArguments());
+                    newFragment.setParent(NearbyAllFragment.this);
+                    NearbyAllFragment.this.setChild(newFragment);
+                    PermissionUtils.setDistances(theseBusinesses, location);
                     List<BusinessInfo> nearbyBusinesses = new ArrayList<>();
                     for (BusinessInfo business: theseBusinesses) {
                         if (business.getDistance() < MAX_DISTANCE_FOR_NEARBY) {
@@ -93,9 +129,13 @@ public class NearbyAllFragment extends CustomFragment {
                         }
                     }
                     ((NearbyAllListFragment)newFragment).setupScrollableContent(nearbyBusinesses);
+                    context.navigationManager.handleNewFragmentCreated(newFragment);
                 }
-                context.navigationManager.handleNewFragmentCreated(newFragment);
-            }
-        });
+            });
+        } else {
+            ((CardView)nearbyButton).setCardBackgroundColor(getResources().getColor(R.color.couponBrownTransparent));
+            ((CardView)nearbyButton).setElevation(0);
+            ((CardView)nearbyButton).setClickable(false);
+        }
     }
 }
