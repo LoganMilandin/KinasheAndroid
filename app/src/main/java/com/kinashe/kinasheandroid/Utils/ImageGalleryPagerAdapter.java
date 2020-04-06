@@ -14,12 +14,14 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+/**
+ * handles the image gallery that is displayed when you click
+ * a business from any page displaying them in a list
+ */
 public class ImageGalleryPagerAdapter extends PagerAdapter {
 
     private Context context;
-
     private LayoutInflater inflater;
-
     private List<String> imageUrls;
 
 
@@ -39,7 +41,8 @@ public class ImageGalleryPagerAdapter extends PagerAdapter {
     public Object instantiateItem(ViewGroup container, final int position) {
         View imageContainer = inflater.inflate(R.layout.layout_image_for_gallery, container, false);
         ImageView image = imageContainer.findViewById(R.id.image_view);
-        Picasso.get().load(imageUrls.get(position)).into(image);
+        GlideApp.with(context).load(imageUrls.get(position))
+                .into(image);
         container.addView(imageContainer);
         return imageContainer;
     }

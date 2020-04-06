@@ -5,23 +5,24 @@ import java.util.List;
 
 /**
  * represents a single company's information from the database. Database
- * getters return objects of this class
+ * getters return instances of this class
  */
 public class BusinessInfo implements Serializable {
+
     private String businessType;
     private String companyName;
     private String description;
     private String descriptionTrans;
     private String website;
-
     private String phone;
     private String lat;
     private String lon;
+    private int monthlyPayment;
+    private boolean verified;
+
     //attribute not from database, used to order businesses instead once
     //user location is calculated
     private double distance;
-    private int monthlyPayment;
-    private boolean verified;
 
 
     private List<List<String>> hours;
@@ -31,10 +32,9 @@ public class BusinessInfo implements Serializable {
     private List<Coupon> coupons;
 
     //default empty constructor required by Firebase
-    private BusinessInfo() {
-    }
+    private BusinessInfo() {}
 
-    //getters for string fields (some may not be used)
+    //getters for fields, required by firebase
     public String getBusinessType() {
         return businessType;
     }
@@ -67,18 +67,6 @@ public class BusinessInfo implements Serializable {
         return lon;
     }
 
-    //getters and setters for custom distance field
-
-
-    public double getDistance() {
-        return distance;
-    }
-
-    public void setDistance(double distance) {
-        this.distance = distance;
-    }
-
-    //getter for payment amount, used for sorting
     public int getMonthlyPayment() {
         return monthlyPayment;
     }
@@ -99,6 +87,16 @@ public class BusinessInfo implements Serializable {
         return verified;
     }
 
+    //getters and setters for custom distance field
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    //this is only to help with debugging
     public String toString() {
         return "\ntype: " + businessType + "\nname: " + companyName + "\ndescription: "
                 + description + "\ndescriptionTrans: " + descriptionTrans

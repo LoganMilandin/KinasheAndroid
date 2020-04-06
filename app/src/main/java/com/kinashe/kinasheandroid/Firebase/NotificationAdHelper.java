@@ -15,16 +15,21 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
 import com.kinashe.kinasheandroid.MainActivity;
-import com.kinashe.kinasheandroid.R;
 
 import java.util.Random;
 
-import static android.provider.Settings.System.getString;
-
+/**
+ * handles Firebase push notifications (though not necessary if sending a
+ * message to all clients) as well as ad initialization and loading from
+ * AdMob
+ */
 public class NotificationAdHelper {
 
     private static final String TAG = "NotificationHelper";
 
+    private static final String AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712";
+
+    //this would be if we wanted to test a push notification on a single device
     public static void getAppId() {
         FirebaseInstanceId.getInstance().getInstanceId()
                 .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
@@ -40,16 +45,25 @@ public class NotificationAdHelper {
                 });
     }
 
+    /**
+     * initializes the ad with the correct unit ID from admob. Currently using a test ad
+     * @param context should be the instance of MainActivity
+     */
     public static void initializeAd(final MainActivity context) {
         MobileAds.initialize(context, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
                 context.ad = new InterstitialAd(context);
-                context.ad.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+                context.ad.setAdUnitId(AD_UNIT_ID);
             }
         });
     }
 
+    /**
+     * displays the ad, but only one in three times this method is called
+     * due to randomization (easily changed)
+     * @param context should be the instance of MainActivity
+     */
     public static void showAd(final MainActivity context) {
         if (new Random().nextInt(3) == 0) {
             try {

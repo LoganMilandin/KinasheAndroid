@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.MainActivity;
-import com.kinashe.kinasheandroid.NearbyAllFragment;
-import com.kinashe.kinasheandroid.PlacesOrTransportationFragment;
 import com.kinashe.kinasheandroid.R;
 import com.kinashe.kinasheandroid.SingleBusinessFragment;
 import com.squareup.picasso.Picasso;
@@ -26,36 +24,41 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * manages the list of businesses that appear on the homepage. This implementation should
+ * be reasonably scalable because it loads views as you scroll instead of loading them all at once
+ */
 public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapter.BusinessViewHolder> {
 
     private static final String TAG = "BusinessListAdapter";
 
     private MainActivity context;
-    public CustomFragment fragment;
-
-
-
+    private CustomFragment fragment;
     private List<BusinessInfo> businesses;
 
-    public static class BusinessViewHolder extends RecyclerView.ViewHolder {
-        public ImageView businessPhoto;
-        public TextView companyName;
-        public TextView businessType;
-        public TextView distance;
-        public ImageView navLogo;
-        public ImageView phoneLogo;
-        public ImageView searchLogo;
+    /**
+     * inner class represents a single view in your list, i.e. the thing that
+     * repeats
+     */
+    static class BusinessViewHolder extends RecyclerView.ViewHolder {
+        ImageView businessPhoto;
+        TextView companyName;
+        TextView businessType;
+        TextView distance;
+        ImageView navLogo;
+        ImageView phoneLogo;
+        ImageView searchLogo;
 
 
         public BusinessViewHolder(@NonNull View businessView) {
             super(businessView);
-            this.businessPhoto = businessView.findViewById(R.id.businessPhoto);
-            this.companyName = businessView.findViewById(R.id.companyName);
-            this.businessType = businessView.findViewById(R.id.businessType);
-            this.distance = businessView.findViewById(R.id.distance);
-            this.navLogo = businessView.findViewById(R.id.directions);
-            this.phoneLogo = businessView.findViewById(R.id.phone);
-            this.searchLogo = businessView.findViewById(R.id.website);
+            businessPhoto = businessView.findViewById(R.id.businessPhoto);
+            companyName = businessView.findViewById(R.id.companyName);
+            businessType = businessView.findViewById(R.id.businessType);
+            distance = businessView.findViewById(R.id.distance);
+            navLogo = businessView.findViewById(R.id.directions);
+            phoneLogo = businessView.findViewById(R.id.phone);
+            searchLogo = businessView.findViewById(R.id.website);
         }
 
     }
@@ -72,9 +75,7 @@ public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapte
 
     @Override
     public BusinessListAdapter.BusinessViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.d(TAG, "constructing list adapter");
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        //now, we inflate a custom layout file with the markup for an individual business
         View businessView = inflater.inflate(R.layout.layout_business, parent, false);
         BusinessViewHolder view = new BusinessViewHolder(businessView);
         return view;
@@ -82,13 +83,14 @@ public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapte
 
     @Override
     public void onBindViewHolder(final BusinessViewHolder holder, int position) {
-        Log.d(TAG, "binding homepage adapter");
         final BusinessInfo business = businesses.get(position);
         List<String> photos = business.getPhotos();
         //not sure if failed photo submissions will show up as null or
         //empty on the read request so this is just to be safe
         if (photos != null && !photos.isEmpty()) {
-            Picasso.get().load(photos.get(0)).into(holder.businessPhoto);
+            GlideApp.with(context).load(photos.get(0))
+                    .into(holder.businessPhoto);
+            //Picasso.get().load(photos.get(0)).into(holder.businessPhoto);
         }
         holder.companyName.setText(business.getCompanyName());
         holder.businessType.setText(business.getBusinessType());
@@ -101,87 +103,37 @@ public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapte
     }
 
     private void setOnClickListeners(final BusinessInfo business, final BusinessViewHolder holder) {
-        //listen for click to open google maps
-        holder.navLogo.setOnTouchListener(new View.OnTouchListener() {
+        View.OnTouchListener actionListener = new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View nav, MotionEvent event) {
+            public boolean onTouch(View view, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d(TAG, "clicked grid");
-                    ((ImageView)nav).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    ((ImageView)view).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d(TAG, "released");
-                    ((ImageView)nav).clearColorFilter();
-                    Intent directionsIntent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("google.navigation:q=" + business.getLat() + "," + business.getLon()));
-                    context.startActivity(directionsIntent);
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    ((ImageView)nav).clearColorFilter();
-                    return false;
-
-                }
-                return false;
-            }
-        });
-        //listen for click to open phone
-        holder.phoneLogo.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View phone, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d(TAG, "clicked grid");
-                    ((ImageView)phone).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d(TAG, "released");
-                    ((ImageView)phone).clearColorFilter();
-                    Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
-                    phoneCallIntent.setData(Uri.parse("tel:" + business.getPhone()));
-                    PermissionUtils.makePhoneCall(context, phoneCallIntent, MainActivity.CALL_REQUEST_CODE);
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    ((ImageView)phone).clearColorFilter();
-                    return false;
-
-                }
-                return false;
-            }
-        });
-        //again we expect an empty string here but it never hurts to be safe
-        if (business.getWebsite() == null || business.getWebsite().equals("")) {
-            holder.searchLogo.setVisibility(View.INVISIBLE);
-        } else {
-            holder.searchLogo.setVisibility(View.VISIBLE);
-            holder.searchLogo.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View web, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        Log.d(TAG, "clicked grid");
-                        ((ImageView)web).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
-                        return true;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        Log.d(TAG, "released");
-                        ((ImageView)web).clearColorFilter();
-                        String website = business.getWebsite().toLowerCase();
-                        Intent browserIntent;
-                        if (website.contains("http")) {
-                            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
-                        } else {
-                            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + website));
-                        }
-                        context.startActivity(browserIntent);
-                        return true;
-                    } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                        ((ImageView)web).clearColorFilter();
-                        return false;
+                    ((ImageView)view).clearColorFilter();
+                    if (view == holder.navLogo) {
+                        startNavigation(business);
+                    } else if (view == holder.phoneLogo) {
+                        startPhoneCall(business);
+                    } else if (view == holder.searchLogo) {
+                        openWebsite(business);
                     }
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
+                    ((ImageView)view).clearColorFilter();
                     return false;
+
                 }
-            });
-        }
+                return false;
+            }
+        };
+        holder.navLogo.setOnTouchListener(actionListener);
+        holder.phoneLogo.setOnTouchListener(actionListener);
+        holder.searchLogo.setOnTouchListener(actionListener);
+
         //now we just set onClick listeners for all the other components of the view to open
         //that business
-        View.OnClickListener listener = new View.OnClickListener() {
+        View.OnClickListener businessClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View photo) {
                 CustomFragment newFragment = new SingleBusinessFragment();
@@ -191,17 +143,46 @@ public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapte
                 fragment.setChild(newFragment);
                 Log.d(TAG, "child null? " + (fragment.getChild() == null));
                 Bundle businessWrapper = new Bundle();
-                context.navigationManager.setFragmentNavbarIndex(newFragment);
                 businessWrapper.putSerializable("businessInfo", business);
                 newFragment.setArguments(businessWrapper);
                 context.navigationManager.handleNewFragmentCreated(newFragment);
             }
         };
-        holder.businessPhoto.setOnClickListener(listener);
-        holder.companyName.setOnClickListener(listener);
-        holder.businessType.setOnClickListener(listener);
-        holder.distance.setOnClickListener(listener);
+        holder.businessPhoto.setOnClickListener(businessClickListener);
+        holder.companyName.setOnClickListener(businessClickListener);
+        holder.businessType.setOnClickListener(businessClickListener);
+        holder.distance.setOnClickListener(businessClickListener);
     }
+
+    private void startNavigation(BusinessInfo business) {
+        Intent directionsIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("google.navigation:q=" + business.getLat() + "," + business.getLon()));
+        context.startActivity(directionsIntent);
+    }
+
+    private void startPhoneCall(BusinessInfo business) {
+        Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
+        phoneCallIntent.setData(Uri.parse("tel:" + business.getPhone()));
+        PermissionUtils.makePhoneCall(context, phoneCallIntent, MainActivity.CALL_REQUEST_CODE);
+    }
+
+    private void openWebsite(BusinessInfo business) {
+        String website = business.getWebsite().toLowerCase();
+        Intent browserIntent;
+        if (website.contains("http")) {
+            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+        } else {
+            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + website));
+        }
+        context.startActivity(browserIntent);
+    }
+
+
+
+
+
+
+
     public int getItemCount() {
         return businesses.size();
     }

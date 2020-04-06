@@ -31,16 +31,15 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * handles the flame activity on the app, also happens to be the
- * home/launch screen but besides that it does the same thing as the other
- * activities. For simplicity, the others aren't commented because it's the same
- * idea as this
+ * handles the page for searching in the app. Searching is done by a simple prefix
+ * match that isn't particularly efficient, but I should be able to use a better data
+ * structure later if needed
  */
 public class SearchBusinessFragment extends CustomFragment {
 
-    public MainActivity context;
-
     private static final String TAG = "SearchFragment";
+
+    public MainActivity context;
     private int navbarIndex;
     private boolean hasTyped;
     private View thisView;
@@ -64,6 +63,10 @@ public class SearchBusinessFragment extends CustomFragment {
         return thisView;
     }
 
+    /**
+     * sets up initial list of businesses, randomizing the list from homepage
+     * @param businesses
+     */
     public void setupScrollableContent(List<BusinessInfo> businesses) {
         Collections.shuffle(businesses);
         this.allBusinesses = businesses;
@@ -75,11 +78,13 @@ public class SearchBusinessFragment extends CustomFragment {
         businessDisplay.setAdapter(displayAdapter);
     }
 
+    /**
+     * handles input from the search bar
+     */
     private void setupInputListener() {
         searchText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 String textEntered = s.toString().toLowerCase();
@@ -98,6 +103,11 @@ public class SearchBusinessFragment extends CustomFragment {
         });
     }
 
+    /**
+     *
+     * @param prefix what has been typed into search bar
+     * @return list of businesses whose name starts with prefix, ignoring capitalization
+     */
     private List<BusinessInfo> searchResults(String prefix) {
         List<BusinessInfo> results = new ArrayList<>();
         for (BusinessInfo business: allBusinesses) {
@@ -109,6 +119,10 @@ public class SearchBusinessFragment extends CustomFragment {
         return results;
     }
 
+    /**
+     * on this page, refreshing reshuffles data retrieved from Firebase and does
+     * nothing if the user is already typing
+     */
     private void setupRefresher() {
         final SwipeRefreshLayout refresher = thisView.findViewById(R.id.refresher);
         refresher.setProgressBackgroundColorSchemeResource(R.color.searchBlue);

@@ -27,10 +27,8 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * handles the flame activity on the app, also happens to be the
- * home/launch screen but besides that it does the same thing as the other
- * activities. For simplicity, the others aren't commented because it's the same
- * idea as this
+ * handles the home screen of the app. Businesses are displayed in order
+ * of monthly payment or, to break ties, their distance from the user
  */
 public class HomeFragment extends CustomFragment {
 
@@ -54,6 +52,11 @@ public class HomeFragment extends CustomFragment {
         return thisView;
     }
 
+    /**
+     * actually initialized the scrolling view of businesses, only to be called
+     * after data is loaded from Firebase
+     * @param businesses sorted list of businesses retrieved from Firebase
+     */
     public void setupScrollableContent(List<BusinessInfo> businesses) {
         this.businesses = businesses;
         for (BusinessInfo b: businesses) {
@@ -66,6 +69,10 @@ public class HomeFragment extends CustomFragment {
         setupRefresher();
     }
 
+    /**
+     * honestly this repeats a ton of code from the other pages with a refresh button but
+     * the behavior is slightly different so I decided to just leave it
+     */
     private void setupRefresher() {
         Log.d(TAG, "setting refresher");
         final SwipeRefreshLayout refresher = thisView.findViewById(R.id.refresher);

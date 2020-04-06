@@ -9,6 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * the only thing interesting about this class is that it contains a map
+ * of strings to subtypes of those strings in order to define the navigation
+ * on the places and transportation pages
+ */
 public class ImageCardHelper {
 
     private static final String TAG = "ImageCardHelper";

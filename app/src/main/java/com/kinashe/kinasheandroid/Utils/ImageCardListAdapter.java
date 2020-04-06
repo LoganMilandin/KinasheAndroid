@@ -21,23 +21,26 @@ import com.kinashe.kinasheandroid.R;
 
 import java.util.List;
 
+/**
+ * manages the grid display of image cards on the places and transportation screens
+ */
 public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdapter.MyViewHolder> {
 
     private static final String TAG = "ImageCardListAdapter";
 
     private MainActivity context;
     private CustomFragment fragment;
-
     private View myView;
     private TextView title;
     private ImageView backButton;
-
     private List<ImageCard> cards;
-
     private String currentTitle;
     private String previousTitle;
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder {
+    /**
+     * represents a single cell in the grid
+     */
+    static class MyViewHolder extends RecyclerView.ViewHolder {
         TextView place_name;
         ImageView place_img;
         CardView image_card;
@@ -66,9 +69,15 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
         return new MyViewHolder(view);
     }
 
+    /**
+     * from this screen, there are 3 possibilities for what the user could do. They could go back,
+     * they could click a cell with nested cells, or they could click a cell without nested cells.
+     * Each possibility gets handled here
+     * @param holder the cell being assigned functionality
+     * @param position the index of the cell in the card list
+     */
     @Override
     public void onBindViewHolder(@NonNull final MyViewHolder holder, final int position) {
-        Log.d(TAG, "binding image card adapter");
         final ImageCard card = cards.get(position);
         holder.place_name.setText(card.getText());
         holder.place_img.setImageResource(card.getImage());
@@ -76,7 +85,6 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
             @Override
             public boolean onTouch(View gridbox, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d(TAG, "clicked grid");
                     holder.place_img.setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
@@ -90,21 +98,11 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
                         List<ImageCard> newCards = ((PlacesOrTransportationFragment) fragment).getCardHelper().getCards(newTitle);
                         if (newCards != null) {
                             cards = newCards;
-                            ImageCardListAdapter.this.previousTitle = oldTitle;
+                            previousTitle = oldTitle;
                             gridItemSelectedHelper(newTitle);
                             notifyDataSetChanged();
                         } else {
-                            NearbyAllFragment newFragment = new NearbyAllFragment();
-                            newFragment.setParent(fragment);
-                            fragment.setChild(newFragment);
-                            ImageCard selectedImage = cards.get(position);
-                            int image = selectedImage.getImage();
-                            Bundle categoryContainer = new Bundle();
-                            context.navigationManager.setFragmentNavbarIndex(newFragment);
-                            categoryContainer.putString("title", newTitle);
-                            categoryContainer.putInt("image", image);
-                            newFragment.setArguments(categoryContainer);
-                            context.navigationManager.handleNewFragmentCreated(newFragment);
+                            createNewFragment(position, newTitle);
                         }
                         return true;
                     }
@@ -118,6 +116,7 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
         });
     }
 
+
     private void gridItemSelectedHelper(String newTitle) {
         title.setText(newTitle);
         backButton.setVisibility(View.VISIBLE);
@@ -130,6 +129,28 @@ public class ImageCardListAdapter extends RecyclerView.Adapter<ImageCardListAdap
         });
     }
 
+    /**
+     * generates a new fragment to handle the case where a leaf node is clicked
+     * @param position the index clicked in the card list
+     * @param newTitle the title for the screen to be generated
+     */
+    private void createNewFragment(int position, String newTitle) {
+        NearbyAllFragment newFragment = new NearbyAllFragment();
+        newFragment.setParent(fragment);
+        fragment.setChild(newFragment);
+        ImageCard selectedImage = cards.get(position);
+        int image = selectedImage.getImage();
+        Bundle categoryContainer = new Bundle();
+        categoryContainer.putString("title", newTitle);
+        categoryContainer.putInt("image", image);
+        newFragment.setArguments(categoryContainer);
+        context.navigationManager.handleNewFragmentCreated(newFragment);
+    }
+
+    /**
+     * "goes back" by resetting the card list to the mapping
+     * for the previous title
+     */
     public void goBack() {
         //if (previousTitle != null) {
         cards = ((PlacesOrTransportationFragment)fragment).getCardHelper().getCards(previousTitle);

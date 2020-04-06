@@ -19,8 +19,7 @@ public class Coupon implements Serializable {
     //date to decide whether to render
     private long expTimestamp;
 
-    public Coupon() {
-    }
+    private Coupon() {}
 
     public String getAvailability() {
         return availability;
@@ -58,6 +57,7 @@ public class Coupon implements Serializable {
         return active;
     }
 
+    //only for debugging
     public String toString() {
         return "\n\ttitle: " + title + "\n\ttitleTrans" + titleTrans + "\n\tavailability: "
                 + availability + "\n\tavailabilityTrans: " + availabilityTrans

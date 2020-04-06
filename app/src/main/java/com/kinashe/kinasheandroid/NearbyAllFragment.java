@@ -15,17 +15,18 @@ import com.kinashe.kinasheandroid.Utils.CustomFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * handles the page that allows the user to select Nearby or All
+ * for a particular business type
+ */
 public class NearbyAllFragment extends CustomFragment {
 
-    private MainActivity context;
-
     private static final String TAG = "AddBusinessPage";
+
+    private MainActivity context;
     private int navbarIndex;
-
-    private static final int MAX_DISTANCE_FOR_NEARBY = 20;
-
+    public static final int MAX_DISTANCE_FOR_NEARBY = 20;
     public List<BusinessInfo> theseBusinesses;
-
     private View myView;
 
 
@@ -37,6 +38,9 @@ public class NearbyAllFragment extends CustomFragment {
         return myView;
     }
 
+    /**
+     * sets image display and click listeners
+     */
     private void setupView() {
         String category = getArguments().getString("title");
         theseBusinesses = new ArrayList<>();
@@ -63,6 +67,7 @@ public class NearbyAllFragment extends CustomFragment {
             @Override
             public void onClick(View button) {
                 CustomFragment newFragment = new NearbyAllListFragment();
+                ((NearbyAllListFragment)newFragment).setNearby(false);
                 newFragment.setArguments(getArguments());
                 newFragment.setParent(NearbyAllFragment.this);
                 NearbyAllFragment.this.setChild(newFragment);
@@ -74,7 +79,7 @@ public class NearbyAllFragment extends CustomFragment {
             @Override
             public void onClick(View button) {
                 CustomFragment newFragment = new NearbyAllListFragment();
-                context.navigationManager.setFragmentNavbarIndex(newFragment);
+                ((NearbyAllListFragment)newFragment).setNearby(true);
                 newFragment.setArguments(getArguments());
                 newFragment.setParent(NearbyAllFragment.this);
                 NearbyAllFragment.this.setChild(newFragment);

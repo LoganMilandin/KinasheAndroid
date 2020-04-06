@@ -16,12 +16,11 @@ import com.kinashe.kinasheandroid.Utils.CustomFragment;
  */
 public class AddBusinessFragment extends CustomFragment {
 
-    public MainActivity context;
-
     private static final String TAG = "AddBusinessPage";
-    private int navbarIndex = 4;
-    private View myView;
 
+    public MainActivity context;
+    private int navbarIndex;
+    private View myView;
 
     //only thing to do is initialize the view and set click listener for web link
     @Override

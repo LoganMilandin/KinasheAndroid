@@ -3,9 +3,12 @@ package com.kinashe.kinasheandroid;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * handles the splash screen displayed when the app is initially
+ * loaded
+ */
 public class SplashActivity extends AppCompatActivity {
 
     private static final int SPLASH_SCREEN_TIME = 1000;

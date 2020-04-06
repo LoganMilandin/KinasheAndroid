@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * handles the page displayed when a single business is clicked from a list.
+ * Supports translations to amharic and back using the same fragment
+ */
 public class SingleBusinessFragment extends CustomFragment {
 
     private static final String TAG = "SingleBusinessFragment";
@@ -70,6 +74,10 @@ public class SingleBusinessFragment extends CustomFragment {
         return thisView;
     }
 
+    /**
+     * fills all views on the page with data from the business chosen
+     * @param inflater inflates resource file for coupon layout
+     */
     private void populateWithData(LayoutInflater inflater) {
         companyName.setText(myInfo.getCompanyName());
         LinearLayout scrollableContainer = thisView.findViewById(R.id.scrollable_part);
@@ -96,6 +104,9 @@ public class SingleBusinessFragment extends CustomFragment {
         this.translateText();
     }
 
+    /**
+     * translates to English or to Amharic depending on value of isTranslated
+     */
     private void translateText() {
         String[] daysToUse;
         if (this.isTranslated) {
@@ -135,6 +146,11 @@ public class SingleBusinessFragment extends CustomFragment {
         this.isTranslated = !this.isTranslated;
     }
 
+    /**
+     * sets the text for a single coupon
+     * @param couponMarkup this coupon
+     * @param data the Firebase data corresponding to this coupon
+     */
     private void setCouponText(View couponMarkup, Coupon data) {
         TextView title = couponMarkup.findViewById(R.id.title);
         TextView deal = couponMarkup.findViewById(R.id.deal);
@@ -154,6 +170,11 @@ public class SingleBusinessFragment extends CustomFragment {
         }
     }
 
+    /**
+     * removes coupons that are not set to active or are and have already expired
+     * @param coupons all coupons for this business
+     * @return all the active and not expired coupons for this business
+     */
     private List<Coupon> removeInactiveOrExpired(List<Coupon> coupons) {
         if (coupons == null) {
             return null;
@@ -176,110 +197,74 @@ public class SingleBusinessFragment extends CustomFragment {
                 context.navigationManager.handleBackClicked(SingleBusinessFragment.this);
             }
         });
-        View translateButton = thisView.findViewById(R.id.translate_button);
-        translateButton.setOnTouchListener(new View.OnTouchListener() {
+        final View translateButton = thisView.findViewById(R.id.translate_button);
+        final View navLogo = thisView.findViewById(R.id.directions);
+        final View phoneLogo = thisView.findViewById(R.id.phone);
+        final View searchLogo = thisView.findViewById(R.id.website);
+        View.OnTouchListener listener = new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View button, MotionEvent event) {
+            public boolean onTouch(View view, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d(TAG, "clicked grid");
-                    ((ImageView)button).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
+                    ((ImageView)view).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d(TAG, "released");
-                    ((ImageView)button).clearColorFilter();
-                    if (event.getX() > 0 && event.getY() < button.getBottom()) {
+                    ((ImageView)view).clearColorFilter();
+                    if (view == translateButton && event.getX() > 0 && event.getY() < view.getBottom()) {
                         translateText();
+                    } else if (view == navLogo) {
+                        startNavigation();
+                    } else if (view == phoneLogo) {
+                        startPhoneCall();
+                    } else if (view == searchLogo) {
+                        openWebsite();
                     }
                     return true;
                 } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    ((ImageView)button).clearColorFilter();
+                    ((ImageView)view).clearColorFilter();
                     return false;
 
                 }
                 return false;
             }
-        });
-        View navLogo = thisView.findViewById(R.id.directions);
-        View phoneLogo = thisView.findViewById(R.id.phone);
-        View searchLogo = thisView.findViewById(R.id.website);
-        navLogo.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View nav, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d(TAG, "clicked grid");
-                    ((ImageView)nav).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d(TAG, "released");
-                    ((ImageView)nav).clearColorFilter();
-                    Intent directionsIntent = new Intent(Intent.ACTION_VIEW,
-                            Uri.parse("google.navigation:q=" + myInfo.getLat() + "," + myInfo.getLon()));
-                    context.startActivity(directionsIntent);
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    ((ImageView)nav).clearColorFilter();
-                    return false;
-
-                }
-                return false;
-            }
-        });
-        //listen for click to open phone
-        phoneLogo.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View phone, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                    Log.d(TAG, "clicked grid");
-                    ((ImageView)phone).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                    Log.d(TAG, "released");
-                    ((ImageView)phone).clearColorFilter();
-                    Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
-                    phoneCallIntent.setData(Uri.parse("tel:" + myInfo.getPhone()));
-                    PermissionUtils.makePhoneCall(context, phoneCallIntent, MainActivity.CALL_REQUEST_CODE);
-                    return true;
-                } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                    ((ImageView)phone).clearColorFilter();
-                    return false;
-
-                }
-                return false;
-            }
-        });
+        };
+        translateButton.setOnTouchListener(listener);
+        navLogo.setOnTouchListener(listener);
+        phoneLogo.setOnTouchListener(listener);
         //again we expect an empty string here but it never hurts to be safe
         if (myInfo.getWebsite() == null || myInfo.getWebsite().equals("")) {
             searchLogo.setVisibility(View.INVISIBLE);
         } else {
-            searchLogo.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View web, MotionEvent event) {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        Log.d(TAG, "clicked grid");
-                        ((ImageView) web).setColorFilter(Color.rgb(123, 123, 123), android.graphics.PorterDuff.Mode.MULTIPLY);
-                        return true;
-                    } else if (event.getAction() == MotionEvent.ACTION_UP) {
-                        Log.d(TAG, "released");
-                        ((ImageView) web).clearColorFilter();
-                        String website = myInfo.getWebsite().toLowerCase();
-                        Intent browserIntent;
-                        if (website.contains("http")) {
-                            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
-                        } else {
-                            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + website));
-                        }
-                        context.startActivity(browserIntent);
-                        return true;
-                    } else if (event.getAction() == MotionEvent.ACTION_CANCEL) {
-                        ((ImageView) web).clearColorFilter();
-                        return false;
-                    }
-                    return false;
-                }
-            });
+            searchLogo.setOnTouchListener(listener);
         }
     }
 
+    private void startNavigation() {
+        Intent directionsIntent = new Intent(Intent.ACTION_VIEW,
+                Uri.parse("google.navigation:q=" + myInfo.getLat() + "," + myInfo.getLon()));
+        context.startActivity(directionsIntent);
+    }
+
+    private void startPhoneCall() {
+        Intent phoneCallIntent = new Intent(Intent.ACTION_CALL);
+        phoneCallIntent.setData(Uri.parse("tel:" + myInfo.getPhone()));
+        PermissionUtils.makePhoneCall(context, phoneCallIntent, MainActivity.CALL_REQUEST_CODE);
+    }
+
+    private void openWebsite() {
+        String website = myInfo.getWebsite().toLowerCase();
+        Intent browserIntent;
+        if (website.contains("http")) {
+            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+        } else {
+            browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + website));
+        }
+        context.startActivity(browserIntent);
+    }
+
+    /**
+     * sets up the image gallery
+     * @param inflater inflater for pager adapter
+     */
     private void setupImagePager(LayoutInflater inflater) {
         TextView photoCount = thisView.findViewById(R.id.photo_count);
         List<String> photos = myInfo.getPhotos();
@@ -291,6 +276,5 @@ public class SingleBusinessFragment extends CustomFragment {
             return;
         }
         photoCount.setText("0");
-
     }
 }

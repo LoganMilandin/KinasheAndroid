@@ -44,6 +44,8 @@ dependencies {
     //recycler view on homepage
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     //image loader library from online
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     implementation 'com.squareup.picasso:picasso:2.71828'
 
 

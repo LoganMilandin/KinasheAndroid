@@ -29,23 +29,20 @@ import java.util.Comparator;
 import java.util.List;
 
 /**
- * handles the flame activity on the app, also happens to be the
- * home/launch screen but besides that it does the same thing as the other
- * activities. For simplicity, the others aren't commented because it's the same
- * idea as this
+ * child to the nearby all fragment, displaying businesses in a
+ * list similar to homepage but filtered by category and choice of
+ * nearby or all
  */
 public class NearbyAllListFragment extends CustomFragment {
 
-    public MainActivity context;
-
     private static final String TAG = "NearbyAllListFragment";
+    public MainActivity context;
     private View thisView;
-
-    //handlers for scrolling view
     private RecyclerView businessDisplay;
     private BusinessListAdapter displayAdapter;
-
     private List<BusinessInfo> theseBusinesses;
+    //true iff the client selected nearby to get to this page
+    private boolean isNearby;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -56,6 +53,9 @@ public class NearbyAllListFragment extends CustomFragment {
         return thisView;
     }
 
+    /**
+     * sets up initial scrollable content in list
+     */
     public void setupView() {
         TextView title = thisView.findViewById(R.id.title);
         title.setText(getArguments().getString("title"));
@@ -79,6 +79,11 @@ public class NearbyAllListFragment extends CustomFragment {
         this.theseBusinesses = businesses;
     }
 
+    /**
+     * On this page, refreshing again retrieves all data but only stores businesses
+     * if they correspond to the type for this page. Also filters content depending
+     * if this is a nearby list or an all list
+     */
     private void setupRefresher() {
         final SwipeRefreshLayout refresher = thisView.findViewById(R.id.refresher);
         refresher.setProgressBackgroundColorSchemeResource(R.color.searchBlue);
@@ -103,8 +108,8 @@ public class NearbyAllListFragment extends CustomFragment {
                                             if (!businessType.getKey().equals("Advertisements")) {
                                                 for (DataSnapshot business : businessType.getChildren()) {
                                                     BusinessInfo businessObj = business.getValue(BusinessInfo.class);
-                                                    if (businessObj.isVerified() && businessObj.getBusinessType().equalsIgnoreCase(type.substring(0, type.indexOf("|") - 1).
-                                                            replace("/", "-"))) {
+                                                    if (businessObj.isVerified() && businessObj.getBusinessType().equalsIgnoreCase
+                                                            (type.substring(0, type.indexOf("|") - 1).replace("/", "-"))) {
                                                         theseBusinesses.add(businessObj);
                                                     }
                                                 }
@@ -115,8 +120,12 @@ public class NearbyAllListFragment extends CustomFragment {
                                                 Location targetLocation = new Location("");
                                                 targetLocation.setLatitude(Double.parseDouble(theseBusinesses.get(i).getLat()));
                                                 targetLocation.setLongitude(Double.parseDouble(theseBusinesses.get(i).getLon()));
-                                                //calculation and rounding done all at once
-                                                theseBusinesses.get(i).setDistance((int) (context.location.distanceTo(targetLocation) / 10.0) / 100.0);
+                                                double distance = (int) (context.location.distanceTo(targetLocation) / 10.0) / 100.0;
+                                                theseBusinesses.get(i).setDistance(distance);
+                                                if (NearbyAllListFragment.this.isNearby &&
+                                                        distance > NearbyAllFragment.MAX_DISTANCE_FOR_NEARBY) {
+                                                    theseBusinesses.remove(i--);
+                                                }
                                             }
                                         }
                                         Collections.sort(theseBusinesses, new Comparator<BusinessInfo>() {
@@ -149,6 +158,10 @@ public class NearbyAllListFragment extends CustomFragment {
                 }, 1000);
             }
         });
+    }
+
+    public void setNearby(boolean isNearby) {
+        this.isNearby = isNearby;
     }
 
 }

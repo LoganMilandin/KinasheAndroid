@@ -33,7 +33,8 @@ import com.kinashe.kinasheandroid.MainActivity;
 import com.kinashe.kinasheandroid.R;
 
 /**
- * Utility class for access to runtime permissions.
+ * got this from Google and only needed to use a small part of it
+ * so I deleted the rest. All credit to them.
  */
 public abstract class PermissionUtils {
 

@@ -18,12 +18,16 @@ import com.kinashe.kinasheandroid.Utils.ImageCardListAdapter;
 
 import java.util.List;
 
+/**
+ * handles both the places tab and the transportation tab. A different instance
+ * of this fragment is used for each tab, but each one just recycles their views
+ * until a leaf node is clicked
+ */
 public class PlacesOrTransportationFragment extends CustomFragment {
-
-    public MainActivity context;
 
     private static final String TAG = "PlacesOrTransportation";
 
+    public MainActivity context;
     private View thisView;
     private RecyclerView typeGrid;
     private ImageCardListAdapter typeGridAdapter;
@@ -46,6 +50,10 @@ public class PlacesOrTransportationFragment extends CustomFragment {
         cardHelper = new ImageCardHelper();
     }
 
+    /**
+     * creates initial grid layout with top level cards. When one is selected it changes
+     * the list, only generating a new fragment if a leaf node is clicked
+     */
     private void createGridLayout() {
         Log.d(TAG, "trying to set up grid");
         String titleText = getArguments().getString("title");

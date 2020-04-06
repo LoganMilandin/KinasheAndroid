@@ -1,5 +1,9 @@
 package com.kinashe.kinasheandroid.Utils;
 
+/**
+ * not really sure this class is super necessary but Avery made it so
+ * we'll keep it around lol
+ */
 public class ImageCard {
 
     private String Text;
