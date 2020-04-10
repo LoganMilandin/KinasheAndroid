@@ -18,7 +18,7 @@ and view its deals. Here, the user can translate the page to Amharic by clicking
 On the search tab, the user can quickly find a company by name and navigate straight to its selection of deals.
 
 ## Categorical Selection
-<img src="https://drive.google.com/uc?export=view&id=1kLwrMa8FRcNqfoWpxiEeUjsb3ueVMfo7" alt="search page" width="300" height="500">
+<img src="https://drive.google.com/uc?export=view&id=1kLwrMa8FRcNqfoWpxiEeUjsb3ueVMfo7" alt="category page" width="300" height="500">
 
 From the tabs marked by a pin and a bus icon, the user can browse categories of places or transportation methods,
 respectively. Once a category is selected, the user can choose to view nearby businesses of that category (if they
