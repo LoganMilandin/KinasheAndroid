@@ -150,6 +150,7 @@ public class MainActivity extends AppCompatActivity
         manager = getSupportFragmentManager();
 
         homeFragment = new HomeFragment();
+        Log.d(TAG, "getting fb data");
         getFirebaseData();
 
         searchFragment = new SearchBusinessFragment();
@@ -180,6 +181,7 @@ public class MainActivity extends AppCompatActivity
                 show(homeFragment).
                 commit();
         activeFragment = homeFragment;
+        Log.d(TAG, "done creating fragments");
     }
 
     /**

@@ -35,6 +35,7 @@ public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapte
     private MainActivity context;
     private CustomFragment fragment;
     private List<BusinessInfo> businesses;
+    private int count;
 
     /**
      * inner class represents a single view in your list, i.e. the thing that
@@ -71,6 +72,7 @@ public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapte
         } else {
             this.businesses = new ArrayList<>();
         }
+        this.count = 0;
     }
 
     @Override
@@ -83,6 +85,7 @@ public class BusinessListAdapter extends RecyclerView.Adapter<BusinessListAdapte
 
     @Override
     public void onBindViewHolder(final BusinessViewHolder holder, int position) {
+        Log.d(TAG, "creating views: " + count++);
         final BusinessInfo business = businesses.get(position);
         List<String> photos = business.getPhotos();
         //not sure if failed photo submissions will show up as null or

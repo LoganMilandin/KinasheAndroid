@@ -58,6 +58,7 @@ public class HomeFragment extends CustomFragment {
      * @param businesses sorted list of businesses retrieved from Firebase
      */
     public void setupScrollableContent(List<BusinessInfo> businesses) {
+        Log.d(TAG, "setting up homepage");
         this.businesses = businesses;
         for (BusinessInfo b: businesses) {
             Log.d(TAG, b.getCompanyName());
