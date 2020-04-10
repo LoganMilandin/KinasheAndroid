@@ -11,7 +11,6 @@ upload translations along with the English version of their promotions.
 From the home page, which displays companies that have paid to appear there, the user can select a company
 and view its deals. Here, the user can translate the page to Amharic by clicking the button in the top right.
 
-
 ## Search Page
 <img src="https://drive.google.com/uc?export=view&id=1lfB-74E5YmcnAYbU0__mODXJLvzhJPtd" alt="search page" width="300" height="500" text-align="center">
 
