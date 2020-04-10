@@ -147,9 +147,9 @@ public class SearchBusinessFragment extends CustomFragment {
                                                 if (!businessType.getKey().equals("Advertisements")) {
                                                     for (DataSnapshot business : businessType.getChildren()) {
                                                         BusinessInfo businessObj = business.getValue(BusinessInfo.class);
-                                                        if (businessObj.isVerified()) {
+                                                        //if (businessObj.isVerified()) {
                                                             allBusinesses.add(business.getValue(BusinessInfo.class));
-                                                        }
+                                                        //}
                                                     }
                                                 }
                                             }

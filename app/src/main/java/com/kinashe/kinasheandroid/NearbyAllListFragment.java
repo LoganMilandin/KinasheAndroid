@@ -109,7 +109,7 @@ public class NearbyAllListFragment extends CustomFragment {
                                             if (!businessType.getKey().equals("Advertisements")) {
                                                 for (DataSnapshot business : businessType.getChildren()) {
                                                     BusinessInfo businessObj = business.getValue(BusinessInfo.class);
-                                                    if (businessObj.isVerified() && businessObj.getBusinessType().equalsIgnoreCase
+                                                    if (businessObj.getBusinessType().equalsIgnoreCase
                                                             (type.substring(0, type.indexOf("|") - 1).replace("/", "-"))) {
                                                         theseBusinesses.add(businessObj);
                                                     }
