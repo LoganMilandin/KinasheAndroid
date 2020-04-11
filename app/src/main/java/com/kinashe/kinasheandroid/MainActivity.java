@@ -266,9 +266,9 @@ public class MainActivity extends AppCompatActivity
                             if (!businessType.getKey().equals("Advertisements")) {
                                 for (DataSnapshot business : businessType.getChildren()) {
                                     BusinessInfo businessObj = business.getValue(BusinessInfo.class);
-                                    if (businessObj.isVerified()) {
+                                    //if (businessObj.isVerified()) {
                                         businesses.add(business.getValue(BusinessInfo.class));
-                                    }
+                                    //}
                                 }
                             }
                         }
