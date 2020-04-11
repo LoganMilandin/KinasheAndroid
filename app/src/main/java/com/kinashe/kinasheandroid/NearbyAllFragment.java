@@ -22,6 +22,8 @@ import com.kinashe.kinasheandroid.Firebase.BusinessInfo;
 import com.kinashe.kinasheandroid.Utils.CustomFragment;
 import com.kinashe.kinasheandroid.Utils.PermissionUtils;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -57,6 +59,7 @@ public class NearbyAllFragment extends CustomFragment {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             Log.d(TAG, "location permissions allowed");
+            Log.d(TAG, "" + (context.location == null));
             setupHelper(context.location);
         } else {
             Log.d(TAG, "requesting location permissions");
@@ -77,7 +80,8 @@ public class NearbyAllFragment extends CustomFragment {
                 });
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP) //for set elevation on nearby
     public void setupHelper(final Location location) {
         String category = getArguments().getString("title");
         theseBusinesses = new ArrayList<>();
@@ -134,7 +138,9 @@ public class NearbyAllFragment extends CustomFragment {
             });
         } else {
             ((CardView)nearbyButton).setCardBackgroundColor(getResources().getColor(R.color.couponBrownTransparent));
-            ((CardView)nearbyButton).setElevation(0);
+            try {
+                ((CardView)nearbyButton).setElevation(0);
+            } catch(Exception e) {}
             ((CardView)nearbyButton).setClickable(false);
         }
     }

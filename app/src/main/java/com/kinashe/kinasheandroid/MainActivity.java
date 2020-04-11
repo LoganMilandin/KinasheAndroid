@@ -238,10 +238,12 @@ public class MainActivity extends AppCompatActivity
      * only called if app has access to location
      */
     private void populateHomepageWithLocation() {
+        Log.d(TAG, "getting location");
         locationProvider.getLastLocation()
                 .addOnSuccessListener(MainActivity.this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {
+                        Log.d(TAG, "got location");
                         // Got last known location. In some rare situations this can be null.
                         MainActivity.this.location = location;
                         populateHomepage();

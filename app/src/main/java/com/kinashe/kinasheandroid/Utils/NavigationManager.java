@@ -144,6 +144,7 @@ public class NavigationManager {
      * device's back button
      */
     public void handleBackClickedManual() {
+        Log.d(TAG, "backstack size: " + backStack.size());
         if ((context.activeFragment == context.placesFragment || context.activeFragment == context.transportationFragment)
                 && ((PlacesOrTransportationFragment) context.activeFragment).getTypeGridAdapter().getPreviousTitle() != null) {
             ((PlacesOrTransportationFragment) context.activeFragment).getTypeGridAdapter().goBack();

@@ -17,7 +17,8 @@
     <ImageView
         android:id="@+id/nearby_all_image"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent=".35"
         app:layout_constraintTop_toBottomOf="@id/topbar_container"
         app:layout_constraintLeft_toLeftOf="parent"
         android:scaleType="centerCrop" />
@@ -25,7 +26,8 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/nearby_button"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent=".16"
         app:layout_constraintTop_toBottomOf="@id/nearby_all_image"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -41,25 +43,17 @@
             android:id="@+id/nearby_container"
             android:layout_width="match_parent"
             android:layout_gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/nearby"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Nearby"
-                android:textSize="40sp"
-                android:textColor="@color/darkBlue" />
-
-            <TextView
-                android:id="@+id/nearby_trans"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/nearby"
-                android:text="በአቅራቢያ"
-                android:textSize="40sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="Nearby\nበአቅራቢያ"
+                android:textSize="35sp"
                 android:textColor="@color/darkBlue" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -67,13 +61,14 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/all_button"
         android:layout_width="match_parent"
-        android:layout_height="120dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent=".16"
         app:layout_constraintTop_toBottomOf="@id/nearby_button"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="20dp"
         app:cardCornerRadius="8dp"
         app:cardBackgroundColor="@color/couponBrown"
         android:foreground="?android:attr/selectableItemBackground"
@@ -83,25 +78,17 @@
             android:id="@+id/all_Container"
             android:layout_width="match_parent"
             android:layout_gravity="center"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <TextView
                 android:id="@+id/all"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="All"
-                android:textSize="40sp"
-                android:textColor="@color/darkBlue" />
-
-            <TextView
-                android:id="@+id/all_trans"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center"
-                app:layout_constraintTop_toBottomOf="@id/all"
-                android:text="ሁሉም"
-                android:textSize="40sp"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="All\nሁሉም"
+                android:textSize="35sp"
                 android:textColor="@color/darkBlue" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
